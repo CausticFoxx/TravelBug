@@ -2,9 +2,9 @@
 Repo for group project. Our group is doing a project called Travel Bug. It's a social travel site driven by community member's posts.
 
 ### Collab
-* Derek
-* Nicole
-* Erica
+* Derek: Back to DB communication
+* Nicole: Front to Back communication
+* Erica: Front End
 
 ## Wireframe
 https://wireframe.cc/WkbSUN
