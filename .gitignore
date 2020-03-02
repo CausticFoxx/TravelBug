@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+TravelBug.mwb.bak
 
 # Distribution / packaging
 .Python
