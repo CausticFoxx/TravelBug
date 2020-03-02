@@ -47,12 +47,7 @@ class MySQLConnection:
 def connectToMySQL(db):
     return MySQLConnection(db)
 
-def len_check(val, length):
-    flag = False
-    if len(val)<length:
-        return True
-
-class Validator:
+class Validator: # Validation check
     def pw_check(self, password = "", confirm_pw = ""): # password and confirm_pw values from request.form
         flag = False
         while True:
@@ -90,7 +85,7 @@ class Validator:
                 return flag
         return flag
 
-    def name_check(self, first_name, last_name):
+    def name_check(self, first_name, last_name): # first & last name from request.form
         flag = False
         name = [first_name, last_name]
         while True:
@@ -103,13 +98,10 @@ class Validator:
             elif (not re.search("[A-Z]", name[0]) or not re.search("[A-Z]", name[1])):
                 flag = True
                 return flag
-            elif (not re.search("[0-9]", name[0]) or not re.search("[0-9]", name[1])):
+            elif (re.search("[0-9]", name[0]) or re.search("[0-9]", name[1])):
                 flag = True
                 return flag
-            elif (not re.search("[_@$]", name[0]) or not re.search("[_@$]", name[1])):
-                flag = True
-                return flag
-            elif re.search("\s", name[0]) or re.search("\s", name[1]):
+            elif (re.search("[_@$]", name[0]) or re.search("[_@$]", name[1])):
                 flag = True
                 return flag
             else: 
