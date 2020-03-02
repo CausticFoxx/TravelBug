@@ -24,19 +24,36 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.13.0/js/mdb.min.js"></script>
-  {% block style %}{% endblock %}
   <style>
-    .tb-primary {
+    .tb-primary, .btn-primary {
       background-color: #fc6262 !important;
+      color: white;
     }
     body {
       margin-top: 75px;
+      margin-bottom: 100px;
+    }
+    .tb-footer{
+      padding-top: 0px !important;
+      padding-bottom: 10px !important;
+    }
+    .social{
+      padding-top: 10px;
+    }
+    .sub-btn, .btn-info{
+      background-color: #00bfa5  !important;
+      color: white;
+    }
+    .navbar.peach-gradient {
+      background: linear-gradient(-40deg, #ffd86f, #fc6262) !important;
     }
   </style>
+  {% block style %}{% endblock %}
 </head>
-
+<!--TODO flash messages into MDbootstrap notes-->
+<!--Navbar-->
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top peach-gradient">
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top peach-gradient">
     <a class="navbar-brand" href="{{ '/profile' if user is not none and user is not undefined else '/' }}">Travel
       Bug</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -76,15 +93,25 @@
     {% block content %}{% endblock %}
   </div>
 </body>
-
+<!--Footer-->
 <footer class="peach-gradient page-footer fixed-bottom font-small">
 
 
   <div class="container-fluid text-center text-md-left">
+    <div class="social text-center">
+    <!-- Linkedin -->
+    <a class="px-2 fa-lg li-ic"><i class="fab fa-linkedin-in"></i></a>
+    <!-- Twitter -->
+    <a class="px-2 fa-lg tw-ic"><i class="fab fa-twitter"></i></a>
+    <!-- Facebook -->
+    <a class="px-2 fa-lg fb-ic"><i class="fab fa-facebook-f"></i></a>
+    
+  </div>
 
-    <div class="text-center py-3">© 2020 Copyright:
+    <div class="tb-footer text-center py-3">© 2020 Copyright:
       <a href="https://travel.bug/"> Travel.bug</a>
     </div>
+  </div>
 
 
 </footer>
