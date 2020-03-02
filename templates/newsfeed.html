@@ -91,8 +91,11 @@
         style="border:0" allowfullscreen></iframe>
 </div>
 <!--Add Pin Modal-->
-<div class="modal fade" id="modal-addpin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
+<a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add new pin
+</a>
+<!--Add pin modal-->
+<!--TODO Jinja templating for pin cards-->
+<div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
@@ -104,7 +107,7 @@
             <div class="modal-body mx-3">
                 <div class="md-form mb-5">
                     <i class="fas prefix grey-text"></i>
-                    <input type="text" name="location" id="location-form" class="form-control validate">
+                    <input type="text" name="location" class="form-control validate">
                     <label>City, State/Province, Country</label>
                 </div>
 
@@ -127,12 +130,11 @@
                 </div>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="upload">Upload</span>
+                        <span class="input-group-text" id="upload-input">Upload</span>
                     </div>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file-choose"
-                            aria-describedby="upload">
-                        <label class="custom-file-label" for="file-choose">Choose file</label>
+                        <input type="file" class="custom-file-input" id="file-input" aria-describedby="upload-input">
+                        <label class="custom-file-label" for="file-input">Choose file</label>
                     </div>
                     <small id="passwordHelpBlockMD" class="form-text text-muted">
                         Image must not be larger than 1250x1250px and must be either png, or jpeg.
@@ -146,9 +148,4 @@
     </div>
 </div>
 
-<div class="text-center">
-    <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#modalContactForm">Add
-        new pin
-        <!--TODO if user not in session button returns to reg page--></a>
-</div>
 {% endblock %}
