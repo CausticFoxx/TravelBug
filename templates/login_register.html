@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block style %}
+<style>
+    #modalLRForm .nav-tabs a.nav-link,
+    #modalLRForm .nav-tabs a.nav-link:visited {
+        color: white;
+    }
+    #modalLRForm .nav-tabs a.nav-link.active,
+    #modalLRForm .nav-tabs a.nav-link.active:visited ,
+    #modalLRForm .nav-tabs a.nav-link:hover {
+        color: #616161;
+    }
+    #modalLRForm .nav-tabs a.nav-link {
+        border: none;
+        border-radius: 0;
+    }
+    #modalLRForm .nav-tabs {
+        background-color: #fc6262;
+    }
+</style>
+{% endblock %}
 
 <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog cascading-modal" role="document">
@@ -8,7 +28,7 @@
 
             <div class="modal-c-tabs">
 
-                <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                <ul class="nav nav-tabs md-tabs tabs-2" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i
                                 class="fas fa-user mr-1"></i>
@@ -46,10 +66,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <div class="options text-center text-md-right mt-1">
-                                <p>Not a member? <a href="#" class="blue-text">Sign Up</a></p>
-                            </div>
-                            <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                            <button type="button" class="btn tb-primary waves-effect ml-auto"
                                 data-dismiss="modal">Close</button>
                         </div>
 
@@ -89,11 +106,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <div class="options text-right">
-                                <p class="pt-1">Already have an account? <a href="#" class="blue-text">Log In</a>
-                                </p>
-                            </div>
-                            <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                            <button type="button" class="btn tb-primary waves-effect ml-auto"
                                 data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -106,7 +119,7 @@
     </div>
 </div>
 <div class="text-center">
-    <a href="" class="btn btn-default btn-rounded my-3" data-toggle="modal"
+    <a href="" class="btn sub-btn btn-rounded my-3" data-toggle="modal"
         data-target="#modalLRForm">LogIn/Register</a>
 </div>
 {% endblock %}

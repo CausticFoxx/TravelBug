@@ -12,7 +12,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 offset-3">
             <div class="card">
                 <div class="avatar mx-auto white">
                     <!--TODO uploaded img code for user in session-->
@@ -23,9 +23,11 @@
                     <h4 class="card-title"><a>Username</a></h4>
                     <!--TODO user in sessions name here. -->
                     <hr>
+                    <!--TODO pre-populate about me with current user Ab. Me content -->
                     <h5>About Me</h5>
                     <div class="md-form">
-                        <textarea id="form7" class="md-textarea form-control" rows="3" placeholder="Write something here..."></textarea>
+                        <textarea id="form7" class="md-textarea form-control" rows="3"
+                            placeholder="Write something here..."></textarea>
                         <label for="form7">Update your about me.</label>
                     </div>
 
@@ -55,59 +57,25 @@
                                                 aria-describedby="inputGroupFileAddon01">
                                             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                                         </div>
-                                                <small id="passwordHelpBlockMD" class="form-text text-muted">
-                                                    Image must not be larger than 500x500px and must be either png, or jpeg. 
-                                                </small>
+                                        <small id="passwordHelpBlockMD" class="form-text text-muted">
+                                            Image must not be larger than 500x500px and must be either png, or jpeg.
+                                        </small>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn tb-primary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn sub-btn">Upload photo</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <a href="#" class="tb-primary btn btn-primary btn-rounded">Save Changes</a>
+                    <a href="#" class="btn sub-btn btn-rounded">Save Changes</a>
                 </div>
             </div>
 
         </div>
-        <div class="col-6">
-            <div class="row">
-                <div class="col">
-                    <div class="card mb-4">
-
-                        <div class="view overlay">
-                            <!--TODO user in session reviews-->
-                            <img class="card-img-top" src="https://picsum.photos/500/250" alt="Card image cap">
-                            <a href="#!">
-                                <div class="mask rgba-white-slight"></div>
-                            </a>
-                        </div>
-
-                        <div class="card-body">
-
-                            <h3 class="card-title">Place</h3>
-                            <hr>
-                            <h5 class="">Reviewer name</h5>
-
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-
-                            <button type="button" class="tb-primary btn btn-primary btn-md">Edit</button>
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
+        
     </div>
 </div>
 {% endblock %}
