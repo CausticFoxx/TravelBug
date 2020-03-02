@@ -142,29 +142,6 @@ class QuerySearch:
         return render_template("new.html",users = users)
 
 
-
-    def add_to_db(self):
-        # mysql = connectToMySQL("TravelBug")
-        # id = 1
-        # print(id)
-        # # query = "INSERT INTO users (id, first_name, last_name, email, created_at, updated_at) VALUES (%(id)s, %(fn)s, %(ln)s, %(email)s, NOW(), NOW());"
-
-        # data = {
-        # "id": id,
-        # "fn": request.form["fn"],
-        # "ln": request.form["ln"],
-        # "email": request.form["email"],
-        # "created_at": datetime.now(),
-        # "updated_at": datetime.now()
-        # }
-        # new_user = mysql.query_db(query,data)
-        # return redirect("/")
-
-
-
-
-
-
 # @app.route('/register', methods=["POST"])
 # def register():
 #     is_valid = True
