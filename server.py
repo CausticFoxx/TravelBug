@@ -87,10 +87,10 @@ class Validator:
     def check_reg(self, email):  # email values from request.form
         mysql = connectToMySQL("travel_bug")
         query = mysql.query_db(
-            "SELECT * FROM users WHERE email = '%(email)s';")
+            "SELECT * FROM users WHERE email = %(email)s;")
         flag = False
         if query:
-            if email == query['email']:
+            if email == query["email"]:
                 flag = True
                 return flag
         return flag
@@ -171,7 +171,7 @@ class Validator:
         flag = True
         mysql = connectToMySQL("travel_bug")
         query = mysql.query_db(
-            "SELECT id, email, password FROM users WHERE email = '%(email)s';"
+            "SELECT id, email, password FROM users WHERE email = %(email)s;"
         )
         if query:
             flag = False
@@ -186,7 +186,7 @@ class QuerySearch:
             form["avatar"] = "default.jpg"
         try:
             mysql = connectToMySQL("travel_bug")
-            query = "INSERT INTO users (first_name, last_name, email, password, avatar) VALUES ('%(first_name)s', '%(last_name)s', '%(email)s', '%(password)s', '%(avatar)s');"
+            query = "INSERT INTO users (first_name, last_name, email, password, avatar) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, %(avatar)s);"
             data = {
                 "first_name": form["first_name"],
                 "last_name": form["last_name"],
@@ -225,11 +225,11 @@ class QuerySearch:
         query = mysql.query_db("SELECT location FROM locations;")
         if validated["location"] not in query:
             mysql = connectToMySQL("travel_bug")
-            query = "INSERT INTO locations (location) VALUE ('%(location)s');"
-            data = {"location": validated['location']}
+            query = "INSERT INTO locations (location) VALUE (%(location)s);"
+            data = {"location": validated["location"]}
             location_add = mysql.query_db(query, data)
         mysql = connectToMySQL("travel_bug")
-        query = "INSERT INTO pins (user_id, location_id, post, go, avoid, picture) VALUES ('%(user_id)s', '%(location_id)s', '%(email)s', '%(picture)s');"
+        query = "INSERT INTO pins (user_id, location_id, post, go, avoid, picture) VALUES (%(user_id)s, %(location_id)s, %(email)s, %(picture)s);"
         data = {
             "user_id": validated["user_id"],
             "location_id": location_add,
@@ -285,13 +285,13 @@ class QuerySearch:
         query = mysql.query_db("SELECT location FROM locations;")
         if validated["location"] not in query:
             mysql = connectToMySQL("travel_bug")
-            query = "INSERT INTO locations (location) VALUE ('%(location)s');"
-            data = {"location": validated['location']}
+            query = "INSERT INTO locations (location) VALUE (%(location)s);"
+            data = {"location": validated["location"]}
             location_add = mysql.query_db(query, data)
         mysql = connectToMySQL("travel_bug")
         query = mysql.query_db("SET SQL_SAFE_UPDATES = 0;")
         mysql = connectToMySQL("travel_bug")
-        query = "UPDATE pins SET location_id = %(location_id)s, post = '%(post)s', go = '%(go)s', avoid = '%(avoid)s', updated_date = NOW(), picture = '%(picture)s' WHERE pins.id = %(pin_id)s;"
+        query = "UPDATE pins SET location_id = %(location_id)s, post = %(post)s, go = %(go)s, avoid = %(avoid)s, updated_date = NOW(), picture = %(picture)s WHERE pins.id = %(pin_id)s;"
         data = {
             "pin_id": validated["pin_id"],
             "location_id": location_add,
