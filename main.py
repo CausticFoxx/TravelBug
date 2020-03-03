@@ -72,12 +72,13 @@ def login():
 #render newsfeed html
 @app.route("/newsfeed")
 def newsfeed():
-      return render_template("newsfeed.html")
+      all_pins = QuerySearch.pin_all()
       #connect user name to pins and order by most recent first, return all pins
       #check if user is in session for add pin form
-#      if 'user_id' in session:
-            #insert new pin into db
-#      return render_template("newsfeed.html", all_pins=all_pins, user_id=user_id) #html for homepage, send all pins, user_id to html (figure out name for all pins, user_id on html)
+      if 'user_id' in session:
+            user_id = session['user_id']
+      return render_template("newsfeed.html", all_pins=all_pins, user_id=user_id)
+
 
 #adds pin
 #@app.route("/addpin/<user_id", methods=['POST'])
