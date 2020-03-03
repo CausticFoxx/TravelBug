@@ -76,7 +76,7 @@ class Validator: # Validation check
                 return flag
 
     def reg_check(self, email): # email values from request.form
-        mysql = connectToMySQL("TravelBug")
+        mysql = connectToMySQL("travel_bug")
         query = next((item for item in mysql.query_db("SELECT * FROM users") if item["email"] == email), None)
         flag = False
         if query:
@@ -107,39 +107,99 @@ class Validator: # Validation check
             else: 
                 return flag
 
+    def pin_owner(self, user_id, pin_id):
+        flag = True
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT * FROM pins WHERE id like %(pin_id)s")
+        if query:
+            if query[0]["user_id"] == user_id:
+                flag = False
+                return flag 
+        return flag
+    
+    def pin_check(self, pin_form):
+        flag = False
+        if pin_form["user_id"] == "":
+            flag = True
+            return flag
+        if pin_form["post"] == "":
+            flag = True
+            return flag
+        if pin_form["go"] == "":
+            pin_form["go"] = None
+        if pin_form["avoid"] == "":
+            pin_form["avoid"] = None
+        if pin_form["picture"] == "":
+            pin_form["picture"] = "default_pin.jpg"
+        return pin_form
+
 class QuerySearch:
-    def add_user_to_db(self, email, password, first_name, last_name):
-        mysql = connectToMySQL("TravelBug")
-        query = "INSERT INTO users (id, first_name, last_name, email, created_at, updated_at) VALUES (%(id)s, %(fn)s, %(ln)s, %(email)s, NOW(), NOW());"
+    def add_user_to_db(self, form): # add user to db
+        if form["avatar"] == "":
+            form["avatar"] = "default.jpg"
+        try:
+            mysql = connectToMySQL("travel_bug")
+            query = "INSERT INTO users (first_name, last_name, email, created_at, updated_at, avatar) VALUES (%(fn)s, %(ln)s, %(email)s, NOW(), NOW(), %(avatar)s);"
+            data = {
+            "first_name": form["first_name"],
+            "last_name": form["last_name"],
+            "email": form["email"].lower(),
+            "password": form["password"],
+            "avatar": form["avatar"]
+            }
+            add_user = mysql.query_db(query, data)
+            mysql = connectToMySQL("travel_bug")
+            user = next((item for item in mysql.query_db("SELECT id, first_name, last_name, email, avatar FROM users") if item["email"] == email), None)
+            return user
+        except:
+            return False
+
+    def user_check(self, email, password): # does user exist
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT id, email, password FROM users WHERE email like '%(email)s'")
+        if query:
+            query
+        user = next((item for item in mysql.query_db("SELECT * FROM users") if item["email"] == email), None)
+        return user
+
+    def pins(self): # gets 10 most recent pins
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT pins.post, pins.created_date, pins.updated_date, pins.go, pins.avoid, pins.picture, users.first_name, users.last_name, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id SORT BY pins.created_date DESC LIMIT 10;")
+        # print(query)
+        return query
+
+    def users_table(self):
+        print(request.form)
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT id, email, first_name, last_name FROM users;")
+        return query
+
+    def new(self, form):
+        validated = Validator.pin_check(form)
+        if validated:
+            return validated
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT location FROM locations;")
+        if validated["location"] not in query:
+            mysql = connectToMySQL("travel_bug")
+            query = "INSTERT INTO locations (location) VALUE ('%(location)s')"
+            data = {
+                "location": validated['location']
+            }
+            add_location = mysql.query_db(query, data)
+        mysql = connectToMySQL("travel_bug")
+        query = "INSERT INTO pins (user_id, location_id, post, go, avoid, created_at, updated_at, picture) VALUES (%(user_id)s, %(location_id)s, %(email)s, NOW(), NOW(), %(picture)s);"
         data = {
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-        "password": password,
-        "created_at": datetime.now(),
-        "updated_at": datetime.now()
+            "user_id": validated["user_id"],
+            "location_id": add_location,
+            "post": validated["post"],
+            "go": validated["go"],
+            "avoid": validated["avoid"],
+            "picture": validated["picture"]
         }
-        add_user = mysql.query_db(query, data)
+        add_pin = mysql.query_db(query, data)
+        return False
 
-    def index(self):
-        mysql = connectToMySQL("TravelBug")
-        users = mysql.query_db("SELECT * FROM users;")
-        print(users)
-        return render_template("index.html", users = users)
-
-
-    def users(self):
-        print(request.form)
-        mysql = connectToMySQL("TravelBug")
-        users = mysql.query_db("SELECT * FROM users;")
-        return render_template("users.html",users = users)
-
-
-    def new(self):
-        print(request.form)
-        mysql = connectToMySQL("TravelBug")
-        users = mysql.query_db("SELECT * FROM users;")
-        return render_template("new.html",users = users)
 
 
 # @app.route('/register', methods=["POST"])
@@ -184,7 +244,7 @@ class QuerySearch:
 #                request.form['password'], request.form['date_hired']))
 #         return redirect('/dashboard')
 
-
+# UPDATE table_name SET column_name1 = 'some_value', column_name2='another_value' WHERE condition(s)
 # @app.route('/login', methods=["POST"])
 # def login():
 #     is_valid = True
