@@ -45,8 +45,7 @@
                 <div class="tab-content">
 
                     <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
-
-
+                        <form action = "\login" method = "POST">
                         <div class="modal-body mb-1">
                             <div class="md-form form-sm mb-5">
                                 <i class="fas fa-envelope prefix"></i>
@@ -60,10 +59,11 @@
                                     class="form-control form-control-sm validate">
                                 <label data-error="wrong" data-success="right" for="modalpassword-login">Password</label>
                             </div>
-                            <div class="text-center mt-2">
-                                <button class="btn btn-info" href="/login">Log in <i class="fas fa-sign-in ml-1"></i></button>
+                            <div class="text-center mt-2"> <!--TODO change all onclick to proper route handlers-->
+                                <button type="submit" class="btn btn-info btn-rounded">Log in <i class="fas fa-sign-in ml-1"></i></button>
                             </div>
                         </div>
+                    </form>
 
                         <div class="modal-footer">
                             <button type="button" class="btn tb-primary waves-effect ml-auto"
@@ -75,8 +75,7 @@
 
 
                     <div class="tab-pane fade" id="panel8" role="tabpanel">
-
-
+                    <form action = "/register" method = "POST">
                         <div class="modal-body">
                             <div class="md-form form-sm mb-5">
                                 <i class="fas fa-address-card prefix"></i></i>
@@ -112,10 +111,12 @@
                             </div>
 
                             <div class="text-center form-sm mt-2">
-                                <button class="btn btn-info" href="/register">Sign up <i class="fas fa-sign-in ml-1"></i></button>
+                                <button type="submit" class="btn btn-info btn-rounded" >Sign up <i class="fas fa-sign-in ml-1"></i></button>
+                            <!--changed back to button, added form-->
                             </div>
-
                         </div>
+                    </form>
+                    </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn tb-primary waves-effect ml-auto"
