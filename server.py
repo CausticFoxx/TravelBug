@@ -54,7 +54,6 @@ def connectToMySQL(db):
 
 # Validator will validate inputs in forms
 class Validator:
-
     def check_pw(
         self,
         password="",
@@ -135,7 +134,7 @@ class Validator:
         if query:
             if query[0]["user_id"] == user_id:
                 flag = False
-                return flag 
+                return flag
         return flag
 
     def pin_check(self, form, check_type):
