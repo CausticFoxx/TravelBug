@@ -84,16 +84,10 @@ class Validator:
             else:
                 return flag
 
-<<<<<<< HEAD
     def check_reg(self, email):  # email values from request.form
         mysql = connectToMySQL("travel_bug")
         query = mysql.query_db(
             "SELECT * FROM users WHERE email = '%(email)s';")
-=======
-    def reg_check(self, email): # email values from request.form
-        mysql = connectToMySQL("travel_bug")
-        query = next((item for item in mysql.query_db("SELECT * FROM users") if item["email"] == email), None)
->>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
         flag = False
         if query:
             if email == query['email']:
@@ -129,14 +123,6 @@ class Validator:
     def pin_owner(self, user_id, pin_id):
         flag = True
         mysql = connectToMySQL("travel_bug")
-<<<<<<< HEAD
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s;")
-        if query:
-            if query[0]["user_id"] == user_id:
-                flag = False
-                return flag
-        return flag
-=======
         query = mysql.query_db("SELECT * FROM pins WHERE id like %(pin_id)s")
         if query:
             if query[0]["user_id"] == user_id:
@@ -337,7 +323,6 @@ class QuerySearch:
 #         print(others)
 #         return render_template('dashboard.html', query=query, others=others)
 #     return redirect('/main')
->>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
 
     def pin_check(self, form, check_type):
         flag = False
