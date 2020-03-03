@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-import re 
 
 import pymysql.cursors
 from flask import Flask, redirect, render_template, request
