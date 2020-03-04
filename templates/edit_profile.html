@@ -20,17 +20,16 @@
                     <!--TODO change avatar size in card-->
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title"><a>Username</a></h4>
-                    <!--TODO user in sessions name here. -->
+                    <h4 class="card-title"><a>{{ user_data.first_name }} {{ user_data.last_name }</a></h4>
                     <hr>
-                    <!--TODO pre-populate about me with current user Ab. Me content -->
+                    {% if user_id == user_data.id %}
                     <h5>About Me</h5>
                     <div class="md-form">
                         <textarea id="form7" name="about-me" class="md-textarea form-control" rows="3"
                             placeholder="Write something here..."></textarea>
                         <label for="form7">Update your about me.</label>
                     </div>
-
+                    {% endif %}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#avatar-uploader">
                         Edit avatar
