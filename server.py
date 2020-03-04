@@ -54,6 +54,7 @@ def connectToMySQL(db):
 
 # Validator will validate inputs in forms
 class Validator:
+
     def check_pw(
         self,
         password="",
@@ -140,22 +141,6 @@ class Validator:
             if user_verify == user_id:
                 return True
 
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s")
-        if query:
-            if query[0]["user_id"] == user_id:
-                flag = False
-                return flag
-        return flag
-=======
-=======
->>>>>>> Merge conflict accidentally got left in place.
-        query = mysql.query_db("SELECT * FROM pins WHERE id like %(pin_id)s")
-        if query:
-            if query[0]["user_id"] == user_id:
-                flag = False
-                return flag 
-        return flag
-    
     def pin_check(self, pin_form):
         flag = False
         if pin_form["user_id"] == "":
@@ -353,6 +338,8 @@ class QuerySearch:
 >>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
 =======
 >>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
+=======
+>>>>>>> 8f106f988ef9757527cda4de3cd28cca6591bbfd
 
     def pin_check(self, form, check_type):
         flag = False
