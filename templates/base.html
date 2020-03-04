@@ -24,13 +24,18 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.13.0/js/mdb.min.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ7wLo7QUzzjKnxBxyz9b-YPkaWJrdvvQ&callback=initMap">
-  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJ7wLo7QUzzjKnxBxyz9b-YPkaWJrdvvQ&callback=initMap">
+    </script>
   <style>
     .tb-primary,
     .btn-primary {
       background-color: #fc6262 !important;
       color: white;
+    }
+
+    .tb-primary-floating {
+      color: #fc6262 !important;
     }
 
     body {
@@ -56,11 +61,18 @@
     .navbar.peach-gradient {
       background: linear-gradient(-40deg, #ffd86f, #fc6262) !important;
     }
+
+    .card-image {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
   </style>
   {% block head %}{% endblock %}
 </head>
 <!--TODO flash messages into MDbootstrap notes-->
 <!--Navbar-->
+
 <body>
   <nav class="navbar navbar-dark navbar-expand-lg fixed-top peach-gradient">
     <a class="navbar-brand" href="{{ '/profile' if user is not none and user is not undefined else '/' }}">Travel
