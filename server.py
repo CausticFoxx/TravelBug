@@ -84,9 +84,6 @@ class Validator:
             else:
                 return flag
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
     def check_reg(self, email, password):  # email values from request.form
         mysql = connectToMySQL("travel_bug")
         query = "SELECT * FROM users WHERE email = %(email)s"
@@ -103,21 +100,6 @@ class Validator:
                 return False
 
         return result
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Merge conflict accidentally got left in place.
-    def check_reg(self, email):  # email values from request.form
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db(
-            "SELECT * FROM users WHERE email = '%(email)s';")
-        flag = False
-        if query:
-            if email == query['email']:
-                flag = True
-                return flag
-        return flag
->>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
 
     def check_name(self, first_name="",
                    last_name=""):  # first & last name from request.form
@@ -147,7 +129,6 @@ class Validator:
     def pin_owner(self, user_id, pin_id):
         flag = False
         mysql = connectToMySQL("travel_bug")
-<<<<<<< HEAD
         query = "SELECT * FROM pins WHERE id = %(pin_id)s"
         data = {
             "pin_id" : pin_id
@@ -158,14 +139,8 @@ class Validator:
             user_verify = [ sub['user_id'] for sub in result ]
             if user_verify == user_id:
                 return True
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s")
-=======
-<<<<<<< HEAD
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s;")
->>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
         if query:
             if query[0]["user_id"] == user_id:
                 flag = False
@@ -374,6 +349,9 @@ class QuerySearch:
 #         print(others)
 #         return render_template('dashboard.html', query=query, others=others)
 #     return redirect('/main')
+<<<<<<< HEAD
+>>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
+=======
 >>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
 
     def pin_check(self, form, check_type):
