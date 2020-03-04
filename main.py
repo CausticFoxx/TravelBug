@@ -148,7 +148,7 @@ def profile(user_id):
             user_pins = QuerySearch.user_pins(user_id)
             #find users data
             user_data = QuerySearch.user_get(user_id)
-            return render_template("profile.html", user_id=session_user_id, profile_user_id=user_id, user_pins=user_pins, user_data=user_data)
+            return render_template("profile.html", user_id=session_user_id, user_pins=user_pins, user_data=user_data[0])
 
 #edit profile html page
 #@app.route("/profile/edit/<user_id>", methods=['POST', 'GET'])

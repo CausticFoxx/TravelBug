@@ -8,7 +8,7 @@
 </style>
 {% endblock %}
 
-{% if user_id == profile_user_id | int %}
+{% if user_id == user_data.id %}
 {% for pin in user_pins %}
 <div class="modal fade" id="edit-pin-{{ pin.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -65,14 +65,13 @@
                     <!--TODO change avatar size in card-->
                 </div>
                 <div class="card-body">
-                    <!--TODO user in sessions name here. -->
-                    <h4 class="card-title"><a>{{user}}</a></h4>
+                    <h4 class="card-title">{{ user_data.first_name }} {{ user_data.last_name }}</h4>
                     <hr>
                     <h5>About Me</h5>
                     <p>
-                        <!--TODO user in session about me content-->
+                        <!--TODO this profile's about me content-->
                     </p>
-                    {% if user_id == profile_user_id | int %}
+                    {% if user_id == user_data.id %}
 
                     <a href="/profile/edit/{{user_id}}" class="tb-primary btn btn-primary btn-rounded">Edit Profile</a>
                     <!--TODO add route to button-->
@@ -170,7 +169,7 @@
                             <h5>Avoid</h5>
                             <p class="card-text mt-3">{{ pin.avoid }}</p>
                         </div>
-                        {% if user_id == profile_user_id | int %}
+                        {% if user_id == user_data.id %}
                         <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                             data-target="#edit-pin-{{ pin.id }}">Edit Pin
                         </a>
