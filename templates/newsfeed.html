@@ -99,6 +99,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
+                <!--added form here-->
+            <form action = "\addpin\{{ user_id }}" method = "POST">
                 <h4 class="modal-title w-100 font-weight-bold">Add Pin</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -142,8 +144,9 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button class="btn sub-btn">Submit pin <i class="fas fa-paper-plane-o ml-1"></i></button>
+                <button type = "submit" class="btn sub-btn">Submit pin <i class="fas fa-paper-plane-o ml-1"></i></button>
             </div>
+        </form>
         </div>
     </div>
 </div>

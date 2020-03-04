@@ -65,31 +65,37 @@ def login():
             return redirect("/")
       else:
             session['user_id'] = user_data['id']
-            print(user_id)
             return redirect("/newsfeed")
 
 #user is brought here if login or registration is successful
 #render newsfeed html
 @app.route("/newsfeed")
 def newsfeed():
-      all_pins = QuerySearch.pin_all()
+      #all_pins = QuerySearch.pin_all()
       #connect user name to pins and order by most recent first, return all pins
       #check if user is in session for add pin form
       if 'user_id' in session:
             user_id = session['user_id']
-      return render_template("newsfeed.html", all_pins=all_pins, user_id=user_id)
+            return render_template("newsfeed.html", user_id=user_id)
+      else:
+            return render_template("newsfeed.html")
 
 
 #adds pin
-#@app.route("/addpin/<user_id", methods=['POST'])
-#def addPin(user_id):
-#      is_valid = True
-      #check to make sure the pin passes validation
-            #if pin doesn't pass validations
-            #send flash message
-#      if is_valid: #if it passes validations
-            #add pin to database
-#      return redirect("/newsfeed") #redirect to newsfeed? or profile?
+@app.route("/addpin/<user_id>", methods=['POST'])
+def addPin(user_id):
+      is_valid = True
+      
+      user_id = session['user_id']
+      location = request.form['location']
+      post = request.form['description']
+      go = request.form['visit']
+      avoid = request.form['avoid']
+      form = [user_id, location, post, go, avoid]
+      new_pin = QuerySearch.pin_new(form)
+      print("*****")
+      print(new_pin)
+      return redirect("/newsfeed") #redirect to newsfeed? or profile?
 
 #@app.route("/editpin/<pin_id>", methods = ['GET', 'POST'])
 #def edit_pin_page(pin_id):
