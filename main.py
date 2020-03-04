@@ -16,6 +16,7 @@ MySQLConnection('travel_bug')
 connectToMySQL('travel_bug')
 Validator = Validator()
 QuerySearch = QuerySearch()
+
 #render login/registration page
 @app.route("/")
 def registration():
@@ -32,21 +33,22 @@ def register():
       password = request.form['password']
       confirm_password = request.form['password-c']
 
-      check_username = Validator.check_name(first_name, last_name)
-      check_password = Validator.check_pw(password=password, confirm_pw=confirm_password)
-      if check_username == True: #if check_username fails, set is_valid to False
+      username_failed = Validator.check_name(first_name, last_name)
+      password_failed = Validator.check_pw(password=password, confirm_pw=confirm_password)
+      if username_failed == True: #if check_username fails, set is_valid to False
             is_valid = False
             flash("First or last name does not meet requirements")
-      if check_password == True: #if check_password fails, set is_valid to False
+      if password_failed == True: #if check_password fails, set is_valid to False
             is_valid = False 
             flash("Passwords must match and be a minimum of 8 characters long containing one lowercase, one uppercase, one number and one special character")
       #if all validations pass, insert info into users database and retrieve from database
-      form = [first_name, last_name, email, password]
-      new_user = QuerySearch.user_add(form)
-      print(new_user)
-      if new_user:
-            user_data = new_user[0]
-            session['user_id'] = user_data['id']
+      if(username_failed == False and password_failed == False):
+            form = [first_name, last_name, email, password]
+            new_user = QuerySearch.user_add(form)
+            print(new_user)
+            if new_user:
+                  user_data = new_user[0]
+                  session['user_id'] = user_data['id']
 
       if is_valid == False:
             return redirect("/")
@@ -78,7 +80,6 @@ def newsfeed():
             return render_template("newsfeed.html", all_pins=all_pins, user_id=user_id)
       else:
             return render_template("newsfeed.html", all_pins=all_pins)
-
 
 #adds pin
 @app.route("/addpin/<user_id>", methods=['POST'])

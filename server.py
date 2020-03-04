@@ -223,6 +223,7 @@ class QuerySearch:
         print(query)
         return query
 
+#############do we need this?
     def users_table(self):
         print(request.form)
         mysql = connectToMySQL("travel_bug")
@@ -230,7 +231,7 @@ class QuerySearch:
             "SELECT id, email, first_name, last_name FROM users;")
         return query
 
-    def pin_new(self, form):
+    def pin_new(self, form): #sends to validations and adds new pin
         not_validated = Validator.pin_check(self, form, "new")
         if not_validated == True:
             return False #pin did not get added
@@ -249,8 +250,6 @@ class QuerySearch:
                 }
                 location = mysql.query_db(query, data)
                 location_id = [ sub['id'] for sub in location]
-                print("LOCATION EXISTS HERES THE ID")
-                print(location_id)
             else:
                 mysql = connectToMySQL("travel_bug")
                 query = "INSERT INTO locations (location) VALUES (%(location)s)"
@@ -258,8 +257,6 @@ class QuerySearch:
                     "location": form[1]
                     }
                 location_id = mysql.query_db(query, data)
-                print("NEW LOCATION HERES THE ID")
-                print(location_id)
             mysql = connectToMySQL("travel_bug")
             query = "INSERT INTO pins (user_id, location_id, post, go, avoid, picture) VALUES (%(user_id)s, %(location_id)s, %(post)s, %(go)s, %(avoid)s, %(picture)s)"
             data = {
