@@ -45,7 +45,6 @@ def register():
       if(username_failed == False and password_failed == False):
             form = [first_name, last_name, email, password]
             new_user = QuerySearch.user_add(form)
-            print(new_user)
             if new_user:
                   user_data = new_user[0]
                   session['user_id'] = user_data['id']
@@ -64,8 +63,6 @@ def login():
       email = request.form['email']
       password = request.form['password']
       user_data = Validator.check_reg(email, password)
-      print("***USER DATA***")
-      print(user_data)
       if user_data:
             session['user_id'] = user_data['id']
             user_id = session['user_id']
@@ -76,7 +73,7 @@ def login():
             return redirect("/")
       if is_valid == True:
             return redirect(url_for("profile", user_id=user_id)) #redirect to profile
-#user is brought here if login or registration is successful
+
 #render newsfeed html
 @app.route("/newsfeed")
 def newsfeed():
@@ -102,12 +99,13 @@ def addPin(user_id):
       new_pin = QuerySearch.pin_new(form)
       return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
-#@app.route("/editpin/<pin_id>", methods = ['GET', 'POST'])
-#def edit_pin_page(pin_id):
+@app.route("/editpin/<pin_id>", methods = ['GET', 'POST'])
+def edit_pin_page(pin_id):
       #if user is not in session, return to registration/login page
-#      if 'user_id' not in session:
-#            return redirect("/")
-      #query database to find if user exists, select first instance (should only be one)
+      if 'user_id' not in session:
+            return redirect("/")
+      #query database to find if user exists
+
       #join user_data with pin_data from pin_id
       #send user information and pin information to pin edit html
 #      return render_template("PIN_EDIT_HTML.html", user_data=user_data, pin_data=pin_data) #sends user_data and pin_data
@@ -126,13 +124,13 @@ def addPin(user_id):
 
 
 #deletes pin from db
-@app.route("/delete/pin/<pin_id>", methods =['POST'])
+@app.route("/delete/pin/<pin_id>", methods =['GET','POST'])
 def deletePin(pin_id):
       #delete pin from db
       user_id = session['user_id']
-      #delete_pin = SearchQuery.pin_delete(user_id, pin_id)
-      #print("IS PIN DELETED")
-      #print(delete_pin)
+      delete_pin = QuerySearch.pin_delete(user_id, pin_id)
+      print("IS PIN DELETED")
+      print(delete_pin)
       return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
 

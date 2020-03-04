@@ -129,15 +129,20 @@ class Validator:
                 return flag
 
     def pin_owner(self, user_id, pin_id):
-        flag = True
+        flag = False
         mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s")
-        if query:
-            if query[0]["user_id"] == user_id:
-                flag = False
-                return flag 
-        return flag
-
+        query = "SELECT pins.user_id FROM pins WHERE id = %(pin_id)s"
+        data = {
+            "pin_id": pin_id
+        }
+        result = mysql.query_db(query, data)
+        user = [sub['user_id'] for sub in result]
+        if (user == [user_id]):
+            flag = True
+            return flag
+        else:
+            return flag
+        
     def pin_check(self, form, check_type):
         flag = False
         if check_type == "new":
@@ -297,21 +302,30 @@ class QuerySearch:
 
     def pin_delete(self, user_id, pin_id):
         flag = True
-        if Validator.pin_owner(user_id, pin_id):
+        pin_owner_verify = Validator.pin_owner(self, user_id = user_id, pin_id=pin_id)
+        if (pin_owner_verify == True):
+            mysql = connectToMySQL("travel_bug")
+            query = "DELETE FROM pins WHERE id = %(pin_id)s"
+            data = {
+                "pin_id": pin_id
+            }
+            delete_pin = mysql.query_db(query, data)
             return flag
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s;")
-        if query["user_id"] == user_id:
+        else:
             flag = False
-            mysql = connectToMySQL("travel_bug")
-            query = mysql.query_db("SET SQL_SAFE_UPDATES = 0;")
-            mysql = connectToMySQL("travel_bug")
-            query = mysql.query_db(
-                "DELETE FROM pins WHERE pins.id = %(pin_id)s;")
-            mysql = connectToMySQL("travel_bug")
-            query = mysql.query_db("SET SQL_SAFE_UPDATES = 1;")
             return flag
-        return flag
+        
+        #if query["user_id"] == user_id:
+        #    flag = False
+        #    mysql = connectToMySQL("travel_bug")
+        #    query = mysql.query_db("SET SQL_SAFE_UPDATES = 0;")
+        #    mysql = connectToMySQL("travel_bug")
+        #    query = mysql.query_db(
+        #        "DELETE FROM pins WHERE pins.id = %(pin_id)s;")
+        #    mysql = connectToMySQL("travel_bug")
+        #    query = mysql.query_db("SET SQL_SAFE_UPDATES = 1;")
+        #    return flag
+        #return flag
 
     def pin_update(self, form):
         validated = Validator.pin_check(form, "update")
