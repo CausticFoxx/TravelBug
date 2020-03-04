@@ -215,10 +215,10 @@ class QuerySearch:
 
         return user
 
-    def pin_all(self):  # gets 10 most recent pins
+    def pin_all(self):  # gets 9 most recent pins
         mysql = connectToMySQL("travel_bug")
         query = mysql.query_db(
-            "SELECT pins.id, pins.post, pins.location_id, pins.user_id, pins.created_date, pins.go, pins.avoid, pins.picture, users.id, users.first_name, users.last_name, locations.id, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id ORDER BY pins.created_date DESC LIMIT 10"
+            "SELECT pins.id, pins.post, pins.location_id, pins.user_id, pins.created_date, pins.go, pins.avoid, pins.picture, users.id, users.first_name, users.last_name, locations.id, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id ORDER BY pins.created_date DESC LIMIT 9"
         )
         print(query)
         return query
@@ -270,12 +270,14 @@ class QuerySearch:
             pin_add = mysql.query_db(query, data)
             return pin_add
 
-    def user_pins(self, user_id):  # get users 10 most recent pins
+    def user_pins(self, user_id):  # get users 9 most recent pins
         mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db(
-            "SELECT pins.post, pins.created_date, pins.updated_date, pins.go, pins.avoid, pins.picture, users.first_name, users.last_name, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id WHERE pins.user_id = %(user_id)s SORT BY pins.created_date DESC LIMIT 10;"
-        )
-        return query
+        query = "SELECT pins.post, pins.created_date, pins.user_id, pins.location_id, pins.go, pins.avoid, pins.picture, users.id, users.first_name, users.last_name, locations.location, locations.id FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id WHERE pins.user_id = %(user_id)s ORDER BY pins.created_date DESC LIMIT 9"
+        data = {
+            "user_id": user_id
+        }
+        users_pins = mysql.query_db(query, data)
+        return users_pins
 
     def user_get(self, email):
         mysql = connectToMySQL("travel_bug")

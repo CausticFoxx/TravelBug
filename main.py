@@ -49,11 +49,12 @@ def register():
             if new_user:
                   user_data = new_user[0]
                   session['user_id'] = user_data['id']
+                  user_id = session['user_id']
 
       if is_valid == False:
             return redirect("/")
       if is_valid == True:
-            return redirect("/newsfeed")
+            return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
 #logins in user
 @app.route("/login", methods=['POST'])
@@ -67,8 +68,8 @@ def login():
             return redirect("/")
       else:
             session['user_id'] = user_data['id']
-            return redirect("/newsfeed")
-
+            user_id = session['user_id']
+            return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 #user is brought here if login or registration is successful
 #render newsfeed html
 @app.route("/newsfeed")
@@ -130,7 +131,10 @@ def profile(user_id):
       #if user is not in session, return to registration/login page
       if 'user_id' not in session:
             return redirect("/")
-      return render_template("profile.html")
+      else:
+            user_pins = QuerySearch.user_pins(user_id)
+            print(user_pins)
+            return render_template("profile.html")
       #query database to find if user_id exists
       #if user exists, select first user (should only be one)
       #join user to pins and other tables that need to be displayed on profile page
