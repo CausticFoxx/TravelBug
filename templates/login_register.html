@@ -6,15 +6,18 @@
     #modalLRForm .nav-tabs a.nav-link:visited {
         color: white;
     }
+
     #modalLRForm .nav-tabs a.nav-link.active,
-    #modalLRForm .nav-tabs a.nav-link.active:visited ,
+    #modalLRForm .nav-tabs a.nav-link.active:visited,
     #modalLRForm .nav-tabs a.nav-link:hover {
         color: #616161;
     }
+
     #modalLRForm .nav-tabs a.nav-link {
         border: none;
         border-radius: 0;
     }
+
     #modalLRForm .nav-tabs {
         background-color: #fc6262;
     }
@@ -45,109 +48,101 @@
                 <div class="tab-content">
 
                     <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
-                        <form action = "\login" method = "POST">
-                        <div class="modal-body mb-1">
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-envelope prefix"></i>
-                                <input type="email" name="email" id="modalemail-login" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modalemail-login">Email</label>
-                            </div>
+                        <form action="/login" method="POST">
+                            <div class="modal-body mb-1">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <input type="email" name="email" id="modalemail-login"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modalemail-login">Email</label>
+                                </div>
 
-                            <div class="md-form form-sm mb-4">
-                                <i class="fas fa-lock prefix"></i>
-                                <input type="password" name="password" id="modalpassword-login"
-                                    class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modalpassword-login">Password</label>
-                            </div>
-                            <div class="text-center mt-2"> <!--TODO change all onclick to proper route handlers-->
+                                <div class="md-form form-sm mb-4">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input type="password" name="password" id="modalpassword-login"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right"
+                                        for="modalpassword-login">Password</label>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <!--TODO change all onclick to proper route handlers-->
 
-                                <button type="submit" class="btn btn-info btn-rounded">Log in <i class="fas fa-sign-in ml-1"></i></button>
+                                    <button type="submit" class="btn btn-info btn-rounded">Log in <i
+                                            class="fas fa-sign-in ml-1"></i></button>
 
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
 
                         <div class="modal-footer">
                             <button type="button" class="btn tb-primary waves-effect ml-auto"
                                 data-dismiss="modal">Close</button>
                         </div>
-
                     </div>
-
-
 
                     <div class="tab-pane fade" id="panel8" role="tabpanel">
-                    <form action = "/register" method = "POST">
-                        <div class="modal-body">
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-address-card prefix"></i></i>
-                                <input type="text" name="f-name" id="modal-fn-reg" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-fn-reg">First Name</label>
+                        <form action="/register" method="POST">
+                            <div class="modal-body">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-address-card prefix"></i></i>
+                                    <input type="text" name="f-name" id="modal-fn-reg"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modal-fn-reg">First Name</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-address-card prefix"></i>
+                                    <input type="text" name="l-name" id="modal-ln-reg"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modal-ln-reg">Last Name</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <input type="email" name="email" id="modal-email-reg"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modal-email-reg">Email</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input type="password" name="password" id="modal-pass-reg"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modal-pass-reg">Password</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-4">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input type="password" name="password-c" id="modal-passcon-reg"
+                                        class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modal-passcon-reg">Confirm
+                                        password</label>
+                                </div>
+
+                                <div class="text-center form-sm mt-2">
+
+                                    <button type="submit" class="btn btn-info btn-rounded">Sign up <i
+                                            class="fas fa-sign-in ml-1"></i></button>
+
+                                </div>
                             </div>
-
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-address-card prefix"></i>
-                                <input type="text" name="l-name"  id="modal-ln-reg" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-ln-reg">Last Name</label>
-                            </div>
-
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-address-card prefix"></i></i>
-                                <input type="text" name="f-name" id="modal-fn-reg" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-fn-reg">First Name</label>
-                            </div>
-
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-address-card prefix"></i>
-                                <input type="text" name="l-name"  id="modal-ln-reg" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-ln-reg">Last Name</label>
-                            </div>
-
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-envelope prefix"></i>
-                                <input type="email" name="email" id="modal-email-reg" class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-email-reg">Email</label>
-                            </div>
-
-                            <div class="md-form form-sm mb-5">
-                                <i class="fas fa-lock prefix"></i>
-                                <input type="password" name="password" id="modal-pass-reg"
-                                    class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-pass-reg">Password</label>
-                            </div>
-
-                            <div class="md-form form-sm mb-4">
-                                <i class="fas fa-lock prefix"></i>
-                                <input type="password" name="password-c" id="modal-passcon-reg"
-                                    class="form-control form-control-sm validate">
-                                <label data-error="wrong" data-success="right" for="modal-passcon-reg">Confirm
-                                    password</label>
-                            </div>
-
-                            <div class="text-center form-sm mt-2">
-
-                                <button type="submit" class="btn btn-info btn-rounded" >Sign up <i class="fas fa-sign-in ml-1"></i></button>
-
-                            </div>
-                        </div>
-                    </form>
+                        </form>
                     </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn tb-primary waves-effect ml-auto"
-                                data-dismiss="modal">Close</button>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn tb-primary waves-effect ml-auto"
+                            data-dismiss="modal">Close</button>
                     </div>
-
                 </div>
 
             </div>
-        </div>
 
+        </div>
     </div>
+
+</div>
 </div>
 <div class="text-center">
-    <a href="" class="btn sub-btn btn-rounded my-3" data-toggle="modal"
-        data-target="#modalLRForm">LogIn/Register</a>
+    <a href="" class="btn sub-btn btn-rounded my-3" data-toggle="modal" data-target="#modalLRForm">LogIn/Register</a>
 </div>
 {% endblock %}
