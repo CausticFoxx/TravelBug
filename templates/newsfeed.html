@@ -1,6 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 {%block style %}
+<script>
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: {lat: -34.397, lng: 150.644}
+      });
+      var geocoder = new google.maps.Geocoder();
+
+      document.getElementById('submit').addEventListener('click', function() {
+        geocodeAddress(geocoder, map);
+      });
+    }
+
+    function geocodeAddress(geocoder, resultsMap) {
+        // TODO Jinja templating for looping through pins generating a array of lat and longitude etc.
+      var address = document.getElementById('address').value;
+      geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+            // TODO zoom into region with pins
+          resultsMap.setCenter(results[0].geometry.location);
+          var marker = new google.maps.Marker({
+            map: resultsMap,
+            position: results[0].geometry.location
+          });
+          marker.addListener('click', function() {
+            // TODO opens detailed view (pin_card modal)
+          });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+  </script>
 <style>
     .pin-card {
         height: 200px;
@@ -86,9 +119,7 @@
 <hr>
 <h6 class="font-weight-bold blue-grey-text py-2">Explore pinned locations!</h6>
 <!--Google Map-->
-<div id="map-container-google-1" class="z-depth-1-half map-container mb-3" style="height: 500px">
-    <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
-        style="border:0" allowfullscreen></iframe>
+<div id="map" class="z-depth-1-half map-container mb-3" style="height: 500px">
 </div>
 <!--Add Pin Modal-->
 <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add new pin
