@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-{% block style %}
+{% block head %}
 <style>
     .avatar {
         width: 150px;
@@ -11,7 +11,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 col-md-12">
             <div class="card">
                 <div class="avatar mx-auto white">
                     <!--TODO uploaded img code for user in session-->
@@ -30,13 +30,13 @@
                     <!--TODO add route edit profile page to button-->
                     <a href="/profile/edit/3" class="tb-primary btn btn-primary btn-rounded">Edit Profile</a>
                     <!--TODO add route to button-->
-                    <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal"
-                        data-target="#addPin-form">Add new pin
+                    <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add
+                        new pin
                     </a>
                     <!--Add pin modal-->
                     <!--TODO Jinja templating for pin cards-->
-                    <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header text-center">
@@ -54,7 +54,8 @@
 
                                     <div class="md-form">
                                         <i class="fas prefix grey-text"></i>
-                                        <textarea type="text" name="description" class="md-textarea form-control"></textarea>
+                                        <textarea type="text" name="description"
+                                            class="md-textarea form-control"></textarea>
                                         <label>Description of location</label>
                                     </div>
 
@@ -94,7 +95,7 @@
             </div>
         </div>
         <!--Pin Card template-->
-        <div class="col-6">
+        <div class="col-6 col-md-12">
             <div class="row">
                 <div class="col">
                     <div class="card mb-4">
@@ -112,12 +113,7 @@
                             <!--TODO add jinja templating for users pin content-->
                             <h3 class="card-title mb-0">Place</h3>
                             <small class="text-muted">Reviewer name</small>
-                            <p class="card-text mt-3">Some quick example text to build on the card title and make up the
-                                bulk
-                                of
-                                the card's
-                                content.
-                            </p>
+                            <p class="card-text mt-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae harum aperiam molestias asperiores quibusdam ut optio dolorem omnis voluptas, pariatur reiciendis doloremque architecto iusto? Nostrum atque suscipit consequuntur culpa debitis!</p>
                             <h5>Visit</h5>
                             <h5>Avoid</h5>
 
@@ -167,6 +163,7 @@
                             <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                                 data-target="#addPin-form">Edit Pin
                             </a>
+                            <a href="/delete/pin/{{pin_id}}" class="btn btn-primary btn-rounded mb-4">Delete Pin</a>
                         </div>
                     </div>
                 </div>

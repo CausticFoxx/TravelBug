@@ -54,7 +54,6 @@ def connectToMySQL(db):
 
 # Validator will validate inputs in forms
 class Validator:
-
     def check_pw(
         self,
         password="",
@@ -85,6 +84,8 @@ class Validator:
             else:
                 return flag
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     def check_reg(self, email, password):  # email values from request.form
         mysql = connectToMySQL("travel_bug")
@@ -102,6 +103,21 @@ class Validator:
                 return False
 
         return result
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Merge conflict accidentally got left in place.
+    def check_reg(self, email):  # email values from request.form
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db(
+            "SELECT * FROM users WHERE email = '%(email)s';")
+        flag = False
+        if query:
+            if email == query['email']:
+                flag = True
+                return flag
+        return flag
+>>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
 
     def check_name(self, first_name="",
                    last_name=""):  # first & last name from request.form
@@ -131,6 +147,7 @@ class Validator:
     def pin_owner(self, user_id, pin_id):
         flag = False
         mysql = connectToMySQL("travel_bug")
+<<<<<<< HEAD
         query = "SELECT * FROM pins WHERE id = %(pin_id)s"
         data = {
             "pin_id" : pin_id
@@ -141,6 +158,223 @@ class Validator:
             user_verify = [ sub['user_id'] for sub in result ]
             if user_verify == user_id:
                 return True
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s")
+=======
+<<<<<<< HEAD
+        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s;")
+>>>>>>> added add_user_to_db, user_check, pins, users_table, new and some more validation
+        if query:
+            if query[0]["user_id"] == user_id:
+                flag = False
+                return flag
+        return flag
+=======
+=======
+>>>>>>> Merge conflict accidentally got left in place.
+        query = mysql.query_db("SELECT * FROM pins WHERE id like %(pin_id)s")
+        if query:
+            if query[0]["user_id"] == user_id:
+                flag = False
+                return flag 
+        return flag
+    
+    def pin_check(self, pin_form):
+        flag = False
+        if pin_form["user_id"] == "":
+            flag = True
+            return flag
+        if pin_form["post"] == "":
+            flag = True
+            return flag
+        if pin_form["go"] == "":
+            pin_form["go"] = None
+        if pin_form["avoid"] == "":
+            pin_form["avoid"] = None
+        if pin_form["picture"] == "":
+            pin_form["picture"] = "default_pin.jpg"
+        return pin_form
+
+class QuerySearch:
+    def add_user_to_db(self, form): # add user to db
+        if form["avatar"] == "":
+            form["avatar"] = "default.jpg"
+        try:
+            mysql = connectToMySQL("travel_bug")
+            query = "INSERT INTO users (first_name, last_name, email, created_at, updated_at, avatar) VALUES (%(fn)s, %(ln)s, %(email)s, NOW(), NOW(), %(avatar)s);"
+            data = {
+            "first_name": form["first_name"],
+            "last_name": form["last_name"],
+            "email": form["email"].lower(),
+            "password": form["password"],
+            "avatar": form["avatar"]
+            }
+            add_user = mysql.query_db(query, data)
+            mysql = connectToMySQL("travel_bug")
+            user = next((item for item in mysql.query_db("SELECT id, first_name, last_name, email, avatar FROM users") if item["email"] == email), None)
+            return user
+        except:
+            return False
+
+    def user_check(self, email, password): # does user exist
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT id, email, password FROM users WHERE email like '%(email)s'")
+        if query:
+            query
+        user = next((item for item in mysql.query_db("SELECT * FROM users") if item["email"] == email), None)
+        return user
+
+    def pins(self): # gets 10 most recent pins
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT pins.post, pins.created_date, pins.updated_date, pins.go, pins.avoid, pins.picture, users.first_name, users.last_name, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id SORT BY pins.created_date DESC LIMIT 10;")
+        # print(query)
+        return query
+
+    def users_table(self):
+        print(request.form)
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT id, email, first_name, last_name FROM users;")
+        return query
+
+    def new(self, form):
+        validated = Validator.pin_check(form)
+        if validated:
+            return validated
+        mysql = connectToMySQL("travel_bug")
+        query = mysql.query_db("SELECT location FROM locations;")
+        if validated["location"] not in query:
+            mysql = connectToMySQL("travel_bug")
+            query = "INSTERT INTO locations (location) VALUE ('%(location)s')"
+            data = {
+                "location": validated['location']
+            }
+            add_location = mysql.query_db(query, data)
+        mysql = connectToMySQL("travel_bug")
+        query = "INSERT INTO pins (user_id, location_id, post, go, avoid, created_at, updated_at, picture) VALUES (%(user_id)s, %(location_id)s, %(email)s, NOW(), NOW(), %(picture)s);"
+        data = {
+            "user_id": validated["user_id"],
+            "location_id": add_location,
+            "post": validated["post"],
+            "go": validated["go"],
+            "avoid": validated["avoid"],
+            "picture": validated["picture"]
+        }
+        add_pin = mysql.query_db(query, data)
+        return False
+
+
+
+# @app.route('/register', methods=["POST"])
+# def register():
+#     is_valid = True
+#     print(request.form)
+#     print(request.form.keys())
+#     for i in key_list:
+#         if i not in request.form.keys():
+#             is_valid = False
+#             flash('All fields required!')
+#     if len(request.form['username']) < 2 or len(request.form['name']) < 2:
+#         is_valid = False
+#         flash('Name and Username needs to be at least 3 characters.')
+#     if request.form['password'] and request.form['confirm_pw']:
+#         if request.form['password'] != request.form['confirm_pw']:
+#             is_valid = False
+#             flash('Passwords do not match.')
+#         elif request.form['password'] == request.form['confirm_pw'] and len(
+#                 request.form['password']) < 7:
+#             is_valid = False
+#             flash('Password must be at least 8 characters.')
+#     if request.form['username']:
+#         mysql = connectToMySQL('wish_list')
+#         user_query = next(
+#             (item for item in mysql.query_db("SELECT * FROM users")
+#              if item["username"] == request.form['username']), None)
+#         if user_query:
+#             if request.form['username'] == user_query['username']:
+#                 is_valid = False
+#                 flash(
+#                     'Username already in use. Please login or use another username.'
+#                 )
+#     if is_valid == False:
+#         return redirect('/main')
+#     else:
+#         flash('Account created! Please login.')
+#         mysql = connectToMySQL("wish_list")
+#         query = mysql.query_db(
+#             "INSERT INTO users (name, username, password, date_hired) VALUES ('%s', '%s', '%s', '%s');"
+#             % (request.form['name'], request.form['username'],
+#                request.form['password'], request.form['date_hired']))
+#         return redirect('/dashboard')
+
+# UPDATE table_name SET column_name1 = 'some_value', column_name2='another_value' WHERE condition(s)
+# @app.route('/login', methods=["POST"])
+# def login():
+#     is_valid = True
+#     if request.form['username']:
+#         mysql = connectToMySQL('wish_list')
+#         user_query = next(
+#             (item for item in mysql.query_db("SELECT * FROM users")
+#              if item["username"] == request.form["username"]), None)
+#         if user_query:
+#             if request.form['username'] == user_query['username']:
+#                 if request.form['password'] == user_query['password']:
+#                     session['user'] = user_query['id']
+#                     session['name'] = user_query['name']
+#                     session['key'] = secrets.token_urlsafe(16)
+#                     return redirect('/dashboard')
+#                 else:
+#                     is_valid = False
+#             else:
+#                 is_valid = False
+#         else:
+#             is_valid = False
+#     else:
+#         is_valid = False
+#         flash('Email or Password is not valid.')
+#     return redirect('/')
+
+
+# @app.route('/dashboard')
+# def dashboard():
+#     if 'user' in session.keys() and 'key' in session.keys(
+#     ) and session['key'] != None:
+#         likes_dict = {}
+#         mysql = connectToMySQL("wish_list")
+#         query = mysql.query_db("SELECT * FROM wish_lists")
+#         check = False
+#         for i in query:
+#             if session['user'] == i['user_id']:
+#                 check = True
+#         if check == True:
+#             mysql = connectToMySQL("wish_list")
+#             query = mysql.query_db(
+#                 "SELECT users.name, items.date_added, items.id as 'item_id', items.user_id as 'item_user_id', items.item, wish_lists.id, wish_lists.user_id, wish_lists.item_id FROM wish_lists LEFT JOIN items ON wish_lists.item_id = items.id LEFT JOIN users ON items.user_id = users.id WHERE wish_lists.user_id LIKE '%s' ORDER BY items.date_added ASC;"
+#                 % session['user'])
+#             item_wished = ""
+#             print(query)
+#             for i in query:
+#                 if item_wished == "":
+#                     item_wished = str(i['item_id'])
+#                 else:
+#                     item_wished += ("','" + str(i['item_id']))
+#             print(item_wished)
+#             mysql = connectToMySQL("wish_list")
+#             others = mysql.query_db(
+#                 "SELECT items.item, items.id as 'item_id', users.name, items.date_added FROM wish_list.items LEFT JOIN wish_list.users ON items.user_id = users.id WHERE items.id NOT IN ('%s') ORDER BY items.date_added ASC;"
+#                 % item_wished)
+#         else:
+#             query = []
+#             mysql = connectToMySQL("wish_list")
+#             others = mysql.query_db(
+#                 "SELECT items.item, items.id as 'item_id', users.name, items.date_added FROM wish_list.items LEFT JOIN wish_list.users ON items.user_id = users.id ORDER BY items.date_added ASC;"
+#             )
+#         print(query)
+#         print(others)
+#         return render_template('dashboard.html', query=query, others=others)
+#     return redirect('/main')
+>>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
 
     def pin_check(self, form, check_type):
         flag = False
