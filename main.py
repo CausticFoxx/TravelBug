@@ -133,8 +133,8 @@ def profile(user_id):
             return redirect("/")
       else:
             user_pins = QuerySearch.user_pins(user_id)
-            print(user_pins)
-            return render_template("profile.html")
+            user_data = QuerySearch.user_get(user_id)
+            return render_template("profile.html", user_pins=user_pins, user_data=user_data)
       #query database to find if user_id exists
       #if user exists, select first user (should only be one)
       #join user to pins and other tables that need to be displayed on profile page

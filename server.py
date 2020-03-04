@@ -279,11 +279,11 @@ class QuerySearch:
         users_pins = mysql.query_db(query, data)
         return users_pins
 
-    def user_get(self, email):
+    def user_get(self, user_id):
         mysql = connectToMySQL("travel_bug")
-        query = "SELECT * FROM users WHERE email = %(em)s"
+        query = "SELECT * FROM users WHERE id = %(id)s"
         data = {
-            "email": email
+            "id": user_id
         }
         result = mysql.query_db(query, data)
         return result
