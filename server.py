@@ -129,14 +129,18 @@ class Validator:
                 return flag
 
     def pin_owner(self, user_id, pin_id):
-        flag = True
+        flag = False
         mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SELECT * FROM pins WHERE id = %(pin_id)s")
-        if query:
-            if query[0]["user_id"] == user_id:
-                flag = False
-                return flag 
-        return flag
+        query = "SELECT * FROM pins WHERE id = %(pin_id)s"
+        data = {
+            "pin_id" : pin_id
+        }
+        result = mysql.query_db(query,data)
+        print(result)
+        if result:
+            user_verify = [ sub['user_id'] for sub in result ]
+            if user_verify == user_id:
+                return True
 
     def pin_check(self, form, check_type):
         flag = False

@@ -120,10 +120,15 @@ def addPin(user_id):
 
 
 #deletes pin from db
-#@app.route("/delete/pin/<pin_id>", methods =['POST'])
-#def deletePin(pin_id):
+@app.route("/delete/pin/<pin_id>", methods =['POST'])
+def deletePin(pin_id):
       #delete pin from db
-#      return redirect(url_for('profile')) #redirect to profile or newsfeed?
+      user_id = session['user_id']
+      #delete_pin = SearchQuery.pin_delete(user_id, pin_id)
+      #print("IS PIN DELETED")
+      #print(delete_pin)
+      return redirect(url_for("profile", user_id=user_id)) #redirect to profile
+
 
 #render profile page html
 @app.route("/profile/<user_id>")
@@ -132,14 +137,11 @@ def profile(user_id):
       if 'user_id' not in session:
             return redirect("/")
       else:
+            #find users pins
             user_pins = QuerySearch.user_pins(user_id)
+            #find users data
             user_data = QuerySearch.user_get(user_id)
             return render_template("profile.html", user_pins=user_pins, user_data=user_data)
-      #query database to find if user_id exists
-      #if user exists, select first user (should only be one)
-      #join user to pins and other tables that need to be displayed on profile page
-      #cycle through all pins to display them
-#      return render_template("profile.html")
 
 #edit profile html page
 #@app.route("/profile/edit/<user_id>", methods=['POST', 'GET'])
