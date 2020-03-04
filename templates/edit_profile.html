@@ -24,6 +24,7 @@
                     <hr>
                     {% if user_id == user_data.id %}
                     <h5>About Me</h5>
+                    <form action = "/edit/{{ user_id }}" method = "POST">
                     <div class="md-form">
                         <textarea id="form7" name="about-me" class="md-textarea form-control" rows="3"
                             placeholder="Write something here..."></textarea>
@@ -69,7 +70,8 @@
                         </div>
                     </div>
 
-                    <a href="#" class="btn sub-btn btn-rounded">Save Changes</a>
+                    <button type="submit" class="btn sub-btn btn-rounded">Save Changes</button>
+                    </form>
                 </div>
             </div>
 

@@ -159,8 +159,8 @@ class Validator:
                 form[3] = None
             if form[4] == "":
                 form[4] = None
-            #if form[5] == "":
-            #    form[5] = "default_pin.jpg"
+            if form[5] == "":
+                form[5] = "default_pin.jpg"
             return flag
         elif check_type == "update":
             if form[0] == "":
@@ -179,8 +179,6 @@ class Validator:
                 form[4] = None
             if form[5] == "" or form[5] == None:
                 form[5] = None
-            #if form["picture"] == "" or form["picture"] == None:
-            #    form["picture"] = "default_pin.jpg"
             return flag
         else:
             flag = True
@@ -231,14 +229,6 @@ class QuerySearch:
         print(query)
         return query
 
-#############do we need this?
-    def users_table(self):
-        print(request.form)
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db(
-            "SELECT id, email, first_name, last_name FROM users;")
-        return query
-
     def pin_new(self, form): #sends to validations and adds new pin
         not_validated = Validator.pin_check(self, form, "new")
         if not_validated == True:
@@ -273,7 +263,7 @@ class QuerySearch:
                 "post": form[2],
                 "go": form[3],
                 "avoid": form[4],
-                "picture": "jpg.jpg"
+                "picture": form[5]
             }
             pin_add = mysql.query_db(query, data)
             return pin_add
@@ -337,3 +327,17 @@ class QuerySearch:
                 return True
             else:
                 return False
+
+    def user_edit(self, form):
+        mysql = connectToMySQL("travel_bug")
+        query = "UPDATE users  SET about_me = %(about)s, avatar = %(avatar)s WHERE id = (%(user_id)s)"
+        data = {
+            "about": form[0],
+            "avatar": form[1],
+            "user_id": form[2],
+        }
+        user_edit = mysql.query_db(query, data)
+        if user_edit:
+            return True
+        else:
+            return False

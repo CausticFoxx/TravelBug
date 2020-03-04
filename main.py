@@ -4,10 +4,19 @@ from flask_bcrypt import Bcrypt
 import re
 import server
 from server import MySQLConnection, Validator, connectToMySQL, QuerySearch
+import os
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
+
+UPLOAD_FOLDER = '../TravelBug/templates/static/images/'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app=Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = "keepitsecretkeepitsafe"
 bcrypt = Bcrypt(app)
 import re
+
 
 #EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 #pass_valid = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*?^])[a-zA-z0-9!@#$%&*?^]+$')
@@ -16,6 +25,33 @@ MySQLConnection('travel_bug')
 connectToMySQL('travel_bug')
 Validator = Validator()
 QuerySearch = QuerySearch()
+
+#file upload
+def allowed_file(filename):
+    return '.' in filename and \
+          filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def upload_file():
+      if request.method == 'POST':
+      # check if the post request has the file part
+            if 'file' not in request.files:
+                  flash('No file part')
+                  return redirect(request.url)
+            file = request.files['file']
+      # if user does not select file, browser also
+      # submit an empty part without filename
+            if file.filename == '':
+                  flash('No selected file')
+                  return redirect(request.url)
+            if file and allowed_file(file.filename):
+                  filename = secure_filename(file.filename)
+                  file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                  return redirect(url_for('addPin',filename=filename))
+
+#@app.route('/uploads/<filename>')
+#def uploaded_file(filename):
+#    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 #render login/registration page
 @app.route("/")
@@ -86,16 +122,36 @@ def newsfeed():
             return render_template("newsfeed.html", all_pins=all_pins)
 
 #adds pin
-@app.route("/addpin/<user_id>", methods=['POST'])
+@app.route("/addpin", methods=['POST'])
+def upload_file():
+      
+      if request.method == 'POST':
+      # check if the post request has the file part
+            if 'file' not in request.files:
+                  flash('No file part')
+                  return redirect(request.url)
+            file = request.files['file']
+      # if user does not select file, browser also
+      # submit an empty part without filename
+            if file.filename == '':
+                  flash('No selected file')
+                  return redirect(request.url)
+            if file and allowed_file(file.filename):
+                  filename = secure_filename(file.filename)
+                  file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                  return redirect(url_for('uploaded_file',filename=filename))
+@app.route("/addpin", methods=['POST'])
 def addPin(user_id):
       is_valid = True
-      
       user_id = session['user_id']
       location = request.form['location']
       post = request.form['description']
       go = request.form['visit']
       avoid = request.form['avoid']
-      form = [user_id, location, post, go, avoid]
+      picture = filename
+      #picture = request.form['file']
+
+      form = [user_id, location, post, go, avoid, picture]
       new_pin = QuerySearch.pin_new(form)
       return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
@@ -150,26 +206,32 @@ def profile(user_id):
             return render_template("profile.html", user_id=session_user_id, user_pins=user_pins, user_data=user_data[0])
 
 #edit profile html page
-#@app.route("/profile/edit/<user_id>", methods=['POST', 'GET'])
-#def edit_profile_page(user_id):
+@app.route("/profile/edit/<user_id>")
+def edit_profile_page(user_id):
       #if user is not in session, return to registration/login page
-#      if 'user_id' not in session:
-#            return redirect("/")
+      if 'user_id' not in session:
+            return redirect("/")
+      return render_template("edit_profile.html", user_id = user_id) #redirect to edit profile
+
+@app.route("/edit/<user_id>", methods=['POST'])
+def edit_profile(user_id):
+      #if user is not in session, return to registration/login page
+      if 'user_id' not in session:
+            return redirect("/")
+      user_id = user_id
+      about_me = request.form['about-me']
+      avatar = "jpg.jpg"
+      form = [about_me, avatar, user_id]
+      user_edit = QuerySearch.user_edit(form)
+      if user_edit == True:
+            print("USER WAS EDITTED")
+      else:
+            print("USER WAS NOT EDITTED")
       #query database to find if user exists, select first instance (should only be one)
       #send user information to edit profile html
-#      return render_template("EDITPROFILE_HTML", user_data=user_data) #sends user_data to html page
+      return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
-#actually edits user when form is submitted
-#@app.route("/edit/profile/<user_id>", methods = ['POST'])
-#def edit_profile(user_id):
-      #select from db using user_id
-      #check validations for new information submitted
-      #if validations fail
-#            flash("") #flash messages based on what failed
-      #if validations passed
-#            flash("Profile updated successfully")
-            #query database to update specific user
-#      return redirect(url_for('profile') #returns to profile page
+
 
 #logs out user
 @app.route("/logout")
