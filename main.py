@@ -59,16 +59,22 @@ def register():
 #logins in user
 @app.route("/login", methods=['POST'])
 def login():
+      is_valid = True
       #checks to make sure email is entered
       email = request.form['email']
       password = request.form['password']
       user_data = Validator.check_reg(email, password)
-      if user_data == False:
-            flash("Email or password incorrect")
-            return redirect("/")
-      else:
+      print("***USER DATA***")
+      print(user_data)
+      if user_data:
             session['user_id'] = user_data['id']
             user_id = session['user_id']
+      else:
+            is_valid = False
+            flash("Email or password incorrect")
+      if is_valid == False:
+            return redirect("/")
+      if is_valid == True:
             return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 #user is brought here if login or registration is successful
 #render newsfeed html
