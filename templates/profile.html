@@ -30,13 +30,13 @@
                     <!--TODO add route edit profile page to button-->
                     <a href="/profile/edit/3" class="tb-primary btn btn-primary btn-rounded">Edit Profile</a>
                     <!--TODO add route to button-->
-                    <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal"
-                        data-target="#addPin-form">Add new pin
+                    <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add
+                        new pin
                     </a>
                     <!--Add pin modal-->
                     <!--TODO Jinja templating for pin cards-->
-                    <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header text-center">
@@ -54,7 +54,8 @@
 
                                     <div class="md-form">
                                         <i class="fas prefix grey-text"></i>
-                                        <textarea type="text" name="description" class="md-textarea form-control"></textarea>
+                                        <textarea type="text" name="description"
+                                            class="md-textarea form-control"></textarea>
                                         <label>Description of location</label>
                                     </div>
 
@@ -167,6 +168,7 @@
                             <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
                                 data-target="#addPin-form">Edit Pin
                             </a>
+                            <a href="/delete/pin/{{pin_id}}" class="btn btn-primary btn-rounded mb-4">Delete Pin</a>
                         </div>
                     </div>
                 </div>
