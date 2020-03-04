@@ -71,14 +71,13 @@ def login():
 #render newsfeed html
 @app.route("/newsfeed")
 def newsfeed():
-      #all_pins = QuerySearch.pin_all()
-      #connect user name to pins and order by most recent first, return all pins
+      all_pins = QuerySearch.pin_all()
       #check if user is in session for add pin form
       if 'user_id' in session:
             user_id = session['user_id']
-            return render_template("newsfeed.html", user_id=user_id)
+            return render_template("newsfeed.html", all_pins=all_pins, user_id=user_id)
       else:
-            return render_template("newsfeed.html")
+            return render_template("newsfeed.html", all_pins=all_pins)
 
 
 #adds pin
@@ -93,9 +92,7 @@ def addPin(user_id):
       avoid = request.form['avoid']
       form = [user_id, location, post, go, avoid]
       new_pin = QuerySearch.pin_new(form)
-      print("*****")
-      print(new_pin)
-      return redirect("/newsfeed") #redirect to newsfeed? or profile?
+      return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
 #@app.route("/editpin/<pin_id>", methods = ['GET', 'POST'])
 #def edit_pin_page(pin_id):
@@ -121,17 +118,18 @@ def addPin(user_id):
 
 
 #deletes pin from db
-@app.route("/delete/pin/<pin_id>", methods =['POST'])
-def deletePin(pin_id):
+#@app.route("/delete/pin/<pin_id>", methods =['POST'])
+#def deletePin(pin_id):
       #delete pin from db
-      return redirect(url_for('profile')) #redirect to profile or newsfeed?
+#      return redirect(url_for('profile')) #redirect to profile or newsfeed?
 
 #render profile page html
-#@app.route("/profile/<user_id>")
-#def profile(user_id):
-      #if user is in session, return to registration/login page
-#      if 'user_id' not in session:
-#            return redirect("/")
+@app.route("/profile/<user_id>")
+def profile(user_id):
+      #if user is not in session, return to registration/login page
+      if 'user_id' not in session:
+            return redirect("/")
+      return render_template("profile.html")
       #query database to find if user_id exists
       #if user exists, select first user (should only be one)
       #join user to pins and other tables that need to be displayed on profile page
