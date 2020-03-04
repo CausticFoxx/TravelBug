@@ -163,22 +163,25 @@ class Validator:
             #    form[5] = "default_pin.jpg"
             return flag
         elif check_type == "update":
-            if form["pin_id"] == "":
+            if form[0] == "":
                 flag = True
                 return flag
-            if form["user_id"] == "":
+            if form[1] == "":
                 flag = True
                 return flag
-            if form["post"] == "":
+            if form[2] == "":
                 flag = True
                 return flag
-            if form["go"] == "" or form["go"] == None:
-                form["go"] = None
-            if form["avoid"] == "" or form["avoid"] == None:
-                form["avoid"] = None
-            if form["picture"] == "" or form["picture"] == None:
-                form["picture"] = "default_pin.jpg"
-            return form
+            if form[3] == "":
+                flag = True
+                return flag
+            if form[4] == "" or form[4] == None:
+                form[4] = None
+            if form[5] == "" or form[5] == None:
+                form[5] = None
+            #if form["picture"] == "" or form["picture"] == None:
+            #    form["picture"] = "default_pin.jpg"
+            return flag
         else:
             flag = True
             return flag
@@ -315,41 +318,22 @@ class QuerySearch:
             flag = False
             return flag
         
-        #if query["user_id"] == user_id:
-        #    flag = False
-        #    mysql = connectToMySQL("travel_bug")
-        #    query = mysql.query_db("SET SQL_SAFE_UPDATES = 0;")
-        #    mysql = connectToMySQL("travel_bug")
-        #    query = mysql.query_db(
-        #        "DELETE FROM pins WHERE pins.id = %(pin_id)s;")
-        #    mysql = connectToMySQL("travel_bug")
-        #    query = mysql.query_db("SET SQL_SAFE_UPDATES = 1;")
-        #    return flag
-        #return flag
-
     def pin_update(self, form):
-        validated = Validator.pin_check(form, "update")
-        if validated:
-            return validated
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SELECT location FROM locations;")
-        if validated["location"] not in query:
+        not_validated = Validator.pin_check(self, form, "update")
+        if not_validated == True:
+            return False
+        else:
             mysql = connectToMySQL("travel_bug")
-            query = "INSERT INTO locations (location) VALUE (%(location)s);"
-            data = {"location": validated["location"]}
-            location_add = mysql.query_db(query, data)
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SET SQL_SAFE_UPDATES = 0;")
-        mysql = connectToMySQL("travel_bug")
-        query = "UPDATE pins SET location_id = %(location_id)s, post = %(post)s, go = %(go)s, avoid = %(avoid)s, updated_date = NOW(), picture = %(picture)s WHERE pins.id = %(pin_id)s;"
-        data = {
-            "pin_id": validated["pin_id"],
-            "location_id": location_add,
-            "post": validated["post"],
-            "go": validated["go"],
-            "avoid": validated["avoid"],
-            "picture": validated["picture"]
-        }
-        pin_update = mysql.query_db(query, data)
-        mysql = connectToMySQL("travel_bug")
-        query = mysql.query_db("SET SQL_SAFE_UPDATES = 1;")
+            query = "UPDATE pins  SET post = %(post)s, go = %(go)s, avoid = %(avoid)s WHERE id = (%(pin_id)s)"
+            data = {
+                "post": form[3],
+                "go": form[4],
+                "avoid": form[5],
+                #"picture":
+                "pin_id": form[0]
+            }
+            pin_edit = mysql.query_db(query, data)
+            if pin_edit:
+                return True
+            else:
+                return False

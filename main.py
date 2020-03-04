@@ -99,21 +99,22 @@ def addPin(user_id):
       new_pin = QuerySearch.pin_new(form)
       return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
-@app.route("/editpin/<pin_id>", methods = ['GET', 'POST'])
-def edit_pin_page(pin_id):
-      #if user is not in session, return to registration/login page
-      if 'user_id' not in session:
-            return redirect("/")
-      #query database to find if user exists
-
-      #join user_data with pin_data from pin_id
-      #send user information and pin information to pin edit html
-#      return render_template("PIN_EDIT_HTML.html", user_data=user_data, pin_data=pin_data) #sends user_data and pin_data
-
-#actually edits pin when form is submitted
-#@app.route("/pin/edit/<pin_id>")
-#def edit_pin(pin_id):
+# edits pin when form is submitted
+@app.route("/pin/edit/<pin_id>", methods = ['POST'])
+def edit_pin(pin_id):
       #select from db using user_id and pin_id
+      pin_id = pin_id
+      user_id = session['user_id']
+      location = request.form['location']
+      post = request.form['description']
+      go = request.form['visit']
+      avoid = request.form['avoid']
+      form = [pin_id, user_id, location, post, go, avoid]
+      pin_edit = QuerySearch.pin_update(form)
+      print("PIN EDIT")
+      print(pin_edit)
+      return redirect(url_for("profile", user_id=user_id)) #redirect to profile
+
       #check validations for new information submitted
       #if validations fail
 #            flash("") #flash messages based on what failed
@@ -169,12 +170,6 @@ def profile(user_id):
 #            flash("Profile updated successfully")
             #query database to update specific user
 #      return redirect(url_for('profile') #returns to profile page
-
-#deletes user from db
-#@app.route("delete/profile/<user_id>", methods = ['POST'])
-#def delete_profile(user_id):
-      #delete user from db
-#      return redirect("/") #redirects to login/registration
 
 #logs out user
 @app.route("/logout")

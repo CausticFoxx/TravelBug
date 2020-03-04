@@ -19,28 +19,29 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form action = "/pin/edit/{{ pin.id }}" method = "POST">
             <div class="modal-body mx-3">
                 <div class="md-form mb-5">
                     <i class="fas prefix grey-text"></i>
-                    <input type="text" id="location-form" class="form-control validate" value="{{ pin.location }}">
+                    <input type="text" name = "location" id="location-form" class="form-control validate" value="{{ pin.location }}">
                     <label>City, State/Province, Country</label>
                 </div>
 
                 <div class="md-form">
                     <i class="fas prefix grey-text"></i>
-                    <textarea type="text" class="md-textarea form-control">{{ pin.post }}</textarea>
+                    <textarea type="text" name="description" class="md-textarea form-control">{{ pin.post }}</textarea>
                     <label>Description of location</label>
                 </div>
 
                 <div class="md-form mb-5">
                     <i class="fas prefix grey-text"></i>
-                    <textarea type="text" class="md-textarea form-control">{{ pin.go }}</textarea>
+                    <textarea type="text" name = "visit" class="md-textarea form-control">{{ pin.go }}</textarea>
                     <label>Places To Visit</label>
                 </div>
 
                 <div class="md-form mb-5">
                     <i class="fas prefix grey-text"></i>
-                    <textarea type="text" class="md-textarea form-control">{{ pin.avoid }}</textarea>
+                    <textarea type="text" name = "avoid" class="md-textarea form-control">{{ pin.avoid }}</textarea>
                     <label>Places To Avoid</label>
                 </div>
             </div>
@@ -48,6 +49,7 @@
                 <input type="hidden" name="id" value="{{ pin.id }}">
                 <button type="submit" class="btn sub-btn">Submit pin <i class="fas fa-paper-plane-o ml-1"></i></button>
             </div>
+        </form>
         </div>
     </div>
 </div>
