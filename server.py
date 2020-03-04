@@ -334,12 +334,6 @@ class QuerySearch:
 #         print(others)
 #         return render_template('dashboard.html', query=query, others=others)
 #     return redirect('/main')
-<<<<<<< HEAD
->>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
-=======
->>>>>>> 599b7def2799d5a59994f7ed27edc919ef97f641
-=======
->>>>>>> 8f106f988ef9757527cda4de3cd28cca6591bbfd
 
     def pin_check(self, form, check_type):
         flag = False
