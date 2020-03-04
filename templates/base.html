@@ -74,7 +74,7 @@
 <!--Navbar-->
 <body>
   <nav class="navbar navbar-dark navbar-expand-lg fixed-top peach-gradient">
-    <a class="navbar-brand" href="{{ '/profile' if user is not none and user is not undefined else '/' }}">Travel
+    <a class="navbar-brand" href="{{ '/profile' if user_id is not none and user_id is not undefined else '/' }}">Travel
       Bug</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +86,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/newsfeed">Newsfeed</a>
         </li>
-        {% if user is not undefined and user is not none %}
+        {% if user_id is not undefined and user_id is not none %}
         <li class="nav-item">
-          <a class="nav-link" href="/profile">Profile</a>
+          <a class="nav-link" href="/profile/{{ user_id }}">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>

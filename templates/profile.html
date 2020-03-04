@@ -7,11 +7,57 @@
     }
 </style>
 {% endblock %}
+
+{% if user_id == profile_user_id | int %}
+{% for pin in user_pins %}
+<div class="modal fade" id="edit-pin-{{ pin.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Edit Pin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <i class="fas prefix grey-text"></i>
+                    <input type="text" id="location-form" class="form-control validate" value="{{ pin.location }}">
+                    <label>City, State/Province, Country</label>
+                </div>
+
+                <div class="md-form">
+                    <i class="fas prefix grey-text"></i>
+                    <textarea type="text" class="md-textarea form-control">{{ pin.post }}</textarea>
+                    <label>Description of location</label>
+                </div>
+
+                <div class="md-form mb-5">
+                    <i class="fas prefix grey-text"></i>
+                    <textarea type="text" class="md-textarea form-control">{{ pin.go }}</textarea>
+                    <label>Places To Visit</label>
+                </div>
+
+                <div class="md-form mb-5">
+                    <i class="fas prefix grey-text"></i>
+                    <textarea type="text" class="md-textarea form-control">{{ pin.avoid }}</textarea>
+                    <label>Places To Avoid</label>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <input type="hidden" name="id" value="{{ pin.id }}">
+                <button type="submit" class="btn sub-btn">Submit pin <i class="fas fa-paper-plane-o ml-1"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 <!--Profile Card-->
 <div class="container">
 
     <div class="row">
-        <div class="col-6 col-md-12">
+        <div class="col-12 col-md-6 mb-3">
             <div class="card">
                 <div class="avatar mx-auto white">
                     <!--TODO uploaded img code for user in session-->
@@ -20,19 +66,21 @@
                 </div>
                 <div class="card-body">
                     <!--TODO user in sessions name here. -->
-                    <h4 class="card-title"><a>Username</a></h4>
+                    <h4 class="card-title"><a>{{user}}</a></h4>
                     <hr>
                     <h5>About Me</h5>
                     <p>
                         <!--TODO user in session about me content-->
                     </p>
-                    <!--TODO add pin location content to Google maps API to generate pin-->
-                    <!--TODO add route edit profile page to button-->
-                    <a href="/profile/edit/3" class="tb-primary btn btn-primary btn-rounded">Edit Profile</a>
+                    {% if user_id == profile_user_id | int %}
+
+                    <a href="/profile/edit/{{user_id}}" class="tb-primary btn btn-primary btn-rounded">Edit Profile</a>
                     <!--TODO add route to button-->
                     <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add
                         new pin
                     </a>
+
+                    {% endif %}
                     <!--Add pin modal-->
                     <!--TODO Jinja templating for pin cards-->
                     <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -97,14 +145,16 @@
             </div>
         </div>
         <!--Pin Card template-->
-        <div class="col-6 col-md-12">
+        <div class="col-12 col-md-6">
+            {% for pin in user_pins %}
             <div class="row">
                 <div class="col">
                     <div class="card mb-4">
 
                         <div class="view overlay">
                             <!--TODO user in session reviews-->
-                            <img class="card-img-top" src="https://picsum.photos/500/250" alt="Card image cap">
+                            <!-- TODO need actual image path -->
+                            <img class="card-img-top" src="/{{ pin.picture }}" alt="Card image cap">
                             <!--TODO add Jinja template for uploaded image -->
                             <a href="#!">
                                 <div class="mask rgba-white-slight"></div>
@@ -112,65 +162,26 @@
                         </div>
 
                         <div class="card-body">
-                            <!--TODO add jinja templating for users pin content-->
-                            <h3 class="card-title mb-0">Place</h3>
-                            <small class="text-muted">Reviewer name</small>
-                            <p class="card-text mt-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae harum aperiam molestias asperiores quibusdam ut optio dolorem omnis voluptas, pariatur reiciendis doloremque architecto iusto? Nostrum atque suscipit consequuntur culpa debitis!</p>
+                            <h3 class="card-title mb-0">{{ pin.location }}</h3>
+                            <small class="text-muted">{{ pin.first_name }} {{ pin.last_name }}</small>
+                            <p class="card-text mt-3">{{ pin.post }}</p>
                             <h5>Visit</h5>
+                            <p class="card-text mt-3">{{ pin.go }}</p>
                             <h5>Avoid</h5>
-
-                            <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog"
-                                aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header text-center">
-                                            <h4 class="modal-title w-100 font-weight-bold">Edit Pin</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body mx-3">
-                                            <div class="md-form mb-5">
-                                                <i class="fas prefix grey-text"></i>
-                                                <input type="text" id="location-form" class="form-control validate">
-                                                <label>City, State/Province, Country</label>
-                                            </div>
-
-                                            <div class="md-form">
-                                                <i class="fas prefix grey-text"></i>
-                                                <textarea type="text" class="md-textarea form-control"></textarea>
-                                                <label>Description of location</label>
-                                            </div>
-
-                                            <div class="md-form mb-5">
-                                                <i class="fas prefix grey-text"></i>
-                                                <textarea type="text" class="md-textarea form-control"></textarea>
-                                                <label>Places To Visit</label>
-                                            </div>
-
-                                            <div class="md-form mb-5">
-                                                <i class="fas prefix grey-text"></i>
-                                                <textarea type="text" class="md-textarea form-control"></textarea>
-                                                <label>Places To Avoid</label>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button class="btn sub-btn">Submit pin <i
-                                                    class="fas fa-paper-plane-o ml-1"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--TODO Jinja templating to prefill edit template with user pin data-->
-                            <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
-                                data-target="#addPin-form">Edit Pin
-                            </a>
-                            <a href="/delete/pin/{{pin_id}}" class="btn btn-primary btn-rounded mb-4">Delete Pin</a>
+                            <p class="card-text mt-3">{{ pin.avoid }}</p>
                         </div>
+                        {% if user_id == profile_user_id | int %}
+                        <a href="" class="btn btn-primary btn-rounded mb-4" data-toggle="modal"
+                            data-target="#edit-pin-{{ pin.id }}">Edit Pin
+                        </a>
+                        <a href="/delete/pin/{{pin_id}}" class="btn btn-primary btn-rounded mb-4">Delete Pin</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
+</div>
 
-    {% endblock %}
+{% endblock %}

@@ -143,11 +143,12 @@ def profile(user_id):
       if 'user_id' not in session:
             return redirect("/")
       else:
+            session_user_id = session['user_id']
             #find users pins
             user_pins = QuerySearch.user_pins(user_id)
             #find users data
             user_data = QuerySearch.user_get(user_id)
-            return render_template("profile.html", user_id = user_id, user_pins=user_pins, user_data=user_data)
+            return render_template("profile.html", user_id=session_user_id, profile_user_id=user_id, user_pins=user_pins, user_data=user_data)
 
 #edit profile html page
 #@app.route("/profile/edit/<user_id>", methods=['POST', 'GET'])
@@ -181,7 +182,7 @@ def profile(user_id):
 @app.route("/logout")
 def logout():
       session.clear()
-      return redirect("/homepage") #return to homepage or profile?
+      return redirect("/")
 
 if __name__=="__main__":
   app.run(debug=True)

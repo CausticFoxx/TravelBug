@@ -4,29 +4,36 @@
 <script>
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 8,
-            center: { lat: -34.397, lng: 150.644 }
+            zoom: 4,
+            center: { lat: 39.828, lng: -98.579 } // center of USA
         });
+
         var geocoder = new google.maps.Geocoder();
 
-        document.getElementById('submit').addEventListener('click', function () {
-            geocodeAddress(geocoder, map);
-        });
+        var pins = [
+            {% for pin in all_pins %}
+            {
+                'location': '{{ pin.location }}',
+                'id': '{{ pin.id }}'
+            },
+            {% endfor %}
+        ];
+
+    pins.forEach(function (pin) {
+        geocodeAddress(geocoder, map, pin);
+    });
     }
 
-    function geocodeAddress(geocoder, resultsMap) {
-        // TODO Jinja templating for looping through pins generating a array of lat and longitude etc.
-        var address = document.getElementById('address').value;
-        geocoder.geocode({ 'address': address }, function (results, status) {
+    function geocodeAddress(geocoder, map, pin) {
+        geocoder.geocode({ 'address': pin.location }, function (results, status) {
             if (status === 'OK') {
-                // TODO zoom into region with pins
-                resultsMap.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
-                    map: resultsMap,
+                    map: map,
                     position: results[0].geometry.location
                 });
+
                 marker.addListener('click', function () {
-                    // TODO opens detailed view (pin_card modal)
+                    $('#expandedview-' + pin.id).modal()
                 });
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
@@ -67,19 +74,20 @@
     }
 </style>
 {% endblock %}
-<!--TODO add jinja templating to grab 10 most recent reviews to populate newsfeed-->
-<!--TODO add left/right scroll functionality-->
+<!--TODO add jinja templating to grab 9 most recent reviews to populate newsfeed-->
 <h3><strong>Newsfeed</strong></h3>
 <hr>
 <!--Modal on click-->
-<div class="modal fade" id="expandedview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+{% for pin in all_pins %}
+<div class="modal fade" id="expandedview-{{ pin.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
             <div class="view overlay">
                 <!--TODO user in session reviews-->
-                <img class="card-img-top" src="https://picsum.photos/500/250" alt="Card image cap">
+                <!-- TODO need actual image path -->
+                <img class="card-img-top" src="/{{ pin.picture }}" alt="Card image cap">
                 <!--TODO add Jinja template for uploaded image -->
                 <a href="#!">
                     <div class="mask rgba-white-slight"></div>
@@ -87,19 +95,18 @@
             </div>
 
             <div class="card-body">
-                <!--TODO add jinja templating for users pin content-->
-                <h3 class="card-title mb-0">Place</h3>
-                <small class="text-muted">Reviewer name</small>
-                <p class="card-text mt-3">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas ipsa neque magni
-                    beatae corrupti voluptatum debitis, sit nisi qui in assumenda porro natus blanditiis earum
-                    facere, temporibus vitae maiores.</p>
+                <h3 class="card-title mb-0">{{ pin.location }}</h3>
+                <small class="text-muted">{{ pin.first_name }} {{ pin.last_name }}</small>
+                <p class="card-text mt-3">{{ pin.post }}</p>
                 <h5>Visit</h5>
+                <p class="card-text mt-3">{{ pin.go }}</p>
                 <h5>Avoid</h5>
+                <p class="card-text mt-3">{{ pin.avoid }}</p>
             </div>
         </div>
     </div>
 </div>
+{% endfor %}
 <h6 class="font-weight-bold blue-grey-text py-2">Recent Pins</h6>
 <div class="container my-4">
     <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
@@ -117,162 +124,38 @@
         </ol>
 
         <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-                <div class="row">
-                    <div class="col-md-4">
+            {% for pin in all_pins %}
+
+            {% if loop.index % 3 == 1 %}
+            <div class="carousel-item {{ 'active' if loop.first }}">
+                <div class="{{ 'row' if loop.index % 3 == 1 }}">
+                    <!-- clearfix d-none d-md-block -->
+                    {% endif %}
+                    <div class="col-md-4 {{ 'clearfix d-none d-md-block' if loop.index % 3 != 1 }}">
+                        <!-- pins.id, pins.post, pins.location_id, pins.user_id, pins.created_date, pins.go, pins.avoid, pins.picture -->
                         <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
+                            style="background-image: url(/{{ pin.picture }});">
+                            <!-- TODO need actual image path -->
                             <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
                                 <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
+                                <h4 class="card-title pt-2 mb-0"><strong>{{ pin.location }} {{ loop.index % 3}}</strong>
+                                </h4>
+                                <h5><small class="text">{{ pin.first_name }} {{ pin.last_name }}</small></h5>
                             </div>
 
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                            <a href="#" data-toggle="modal" data-target="#expandedview-{{ pin.id }}">
                                 <!--TODO add data toggle and data target to href-->
                                 <div class="mask waves-effect waves-light rgba-white-slight"></div>
                             </a>
 
                         </div>
                     </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
 
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
+                    {% if loop.index % 3 == 0 or loop.last %}
                 </div>
             </div>
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4 clearfix d-none d-md-block">
-                        <div class="pin-card card card-image view overlay"
-                            style="background-image: url(https://picsum.photos/300/200);">
-                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                                <!--TODO add name truncation functionality for location name-->
-                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                                <h5><small class="text">Username</small></h5>
-                            </div>
-
-                            <a href="#" data-toggle="modal" data-target="#expandedview">
-                                <!--TODO add data toggle and data target to href-->
-                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -290,55 +173,57 @@
 <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header text-center">
-                <!--added form here-->
-            <form action = "\addpin\{{ user_id }}" method = "POST">
-                <h4 class="modal-title w-100 font-weight-bold">Add Pin</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                    <i class="fas prefix grey-text"></i>
-                    <input type="text" name="location" class="form-control validate">
-                    <label>City, State/Province, Country</label>
+            <form action="/addpin/{{ user_id }}" method="POST">
+                <div class="modal-header text-center">
+                    <!--added form here-->
+                    <h4 class="modal-title w-100 font-weight-bold">Add Pin</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-
-                <div class="md-form">
-                    <i class="fas prefix grey-text"></i>
-                    <textarea type="text" name="description" class="md-textarea form-control"></textarea>
-                    <label>Description of location</label>
-                </div>
-
-                <div class="md-form mb-5">
-                    <i class="fas prefix grey-text"></i>
-                    <textarea type="text" name="visit" class="md-textarea form-control"></textarea>
-                    <label>Places To Visit</label>
-                </div>
-
-                <div class="md-form mb-5">
-                    <i class="fas prefix grey-text"></i>
-                    <textarea type="text" name="avoid" class="md-textarea form-control"></textarea>
-                    <label>Places To Avoid</label>
-                </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="upload-input">Upload</span>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <i class="fas prefix grey-text"></i>
+                        <input type="text" name="location" class="form-control validate">
+                        <label>City, State/Province, Country</label>
                     </div>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file-input" aria-describedby="upload-input">
-                        <label class="custom-file-label" for="file-input">Choose file</label>
+
+                    <div class="md-form">
+                        <i class="fas prefix grey-text"></i>
+                        <textarea type="text" name="description" class="md-textarea form-control"></textarea>
+                        <label>Description of location</label>
                     </div>
-                    <small id="passwordHelpBlockMD" class="form-text text-muted">
-                        Image must not be larger than 1250x1250px and must be either png, or jpeg.
-                    </small>
+
+                    <div class="md-form mb-5">
+                        <i class="fas prefix grey-text"></i>
+                        <textarea type="text" name="visit" class="md-textarea form-control"></textarea>
+                        <label>Places To Visit</label>
+                    </div>
+
+                    <div class="md-form mb-5">
+                        <i class="fas prefix grey-text"></i>
+                        <textarea type="text" name="avoid" class="md-textarea form-control"></textarea>
+                        <label>Places To Avoid</label>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="upload-input">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file-input"
+                                aria-describedby="upload-input">
+                            <label class="custom-file-label" for="file-input">Choose file</label>
+                        </div>
+                        <small id="passwordHelpBlockMD" class="form-text text-muted">
+                            Image must not be larger than 1250x1250px and must be either png, or jpeg.
+                        </small>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type = "submit" class="btn sub-btn">Submit pin <i class="fas fa-paper-plane-o ml-1"></i></button>
-            </div>
-        </form>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn sub-btn">Submit pin <i
+                            class="fas fa-paper-plane-o ml-1"></i></button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

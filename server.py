@@ -272,16 +272,20 @@ class QuerySearch:
 
     def user_pins(self, user_id):  # get users 10 most recent pins
         mysql = connectToMySQL("travel_bug")
+        data = {
+            'user_id': user_id
+        }
         query = mysql.query_db(
-            "SELECT pins.post, pins.created_date, pins.updated_date, pins.go, pins.avoid, pins.picture, users.first_name, users.last_name, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id WHERE pins.user_id = %(user_id)s SORT BY pins.created_date DESC LIMIT 10;"
+            "SELECT pins.id, pins.post, pins.created_date, pins.updated_date, pins.go, pins.avoid, pins.picture, users.first_name, users.last_name, locations.location FROM pins LEFT JOIN users ON pins.user_id = users.id LEFT JOIN locations ON pins.location_id = locations.id WHERE pins.user_id = %(user_id)s ORDER BY pins.created_date DESC LIMIT 10;",
+            data
         )
         return query
 
-    def user_get(self, email):
+    def user_get(self, user_id):
         mysql = connectToMySQL("travel_bug")
-        query = "SELECT * FROM users WHERE email = %(em)s"
+        query = "SELECT * FROM users WHERE id = %(user_id)s"
         data = {
-            "email": email
+            "user_id": user_id
         }
         result = mysql.query_db(query, data)
         return result
