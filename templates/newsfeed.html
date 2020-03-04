@@ -3,37 +3,37 @@
 {% block head %}
 <script>
     function initMap() {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
-        center: {lat: -34.397, lng: 150.644}
-      });
-      var geocoder = new google.maps.Geocoder();
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: { lat: -34.397, lng: 150.644 }
+        });
+        var geocoder = new google.maps.Geocoder();
 
-      document.getElementById('submit').addEventListener('click', function() {
-        geocodeAddress(geocoder, map);
-      });
+        document.getElementById('submit').addEventListener('click', function () {
+            geocodeAddress(geocoder, map);
+        });
     }
 
     function geocodeAddress(geocoder, resultsMap) {
         // TODO Jinja templating for looping through pins generating a array of lat and longitude etc.
-      var address = document.getElementById('address').value;
-      geocoder.geocode({'address': address}, function(results, status) {
-        if (status === 'OK') {
-            // TODO zoom into region with pins
-          resultsMap.setCenter(results[0].geometry.location);
-          var marker = new google.maps.Marker({
-            map: resultsMap,
-            position: results[0].geometry.location
-          });
-          marker.addListener('click', function() {
-            // TODO opens detailed view (pin_card modal)
-          });
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      });
+        var address = document.getElementById('address').value;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                // TODO zoom into region with pins
+                resultsMap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: resultsMap,
+                    position: results[0].geometry.location
+                });
+                marker.addListener('click', function () {
+                    // TODO opens detailed view (pin_card modal)
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
     }
-  </script>
+</script>
 <style>
     .pin-card {
         height: 200px;
@@ -57,61 +57,222 @@
         width: 100%;
         position: absolute;
     }
+
+    .carousel-indicators {
+        bottom: -50px;
+    }
+
+    .carousel-controls-top {
+        font-size: 20px;
+    }
 </style>
 {% endblock %}
 <!--TODO add jinja templating to grab 10 most recent reviews to populate newsfeed-->
 <!--TODO add left/right scroll functionality-->
 <h3><strong>Newsfeed</strong></h3>
 <hr>
-<div class="row row-cols-4">
-    <div class="col mb-4">
-        <!--Modal on click-->
-        <div class="modal fade" id="expandedview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+<!--Modal on click-->
+<div class="modal fade" id="expandedview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
 
-                    <div class="view overlay">
-                        <!--TODO user in session reviews-->
-                        <img class="card-img-top" src="https://picsum.photos/500/250" alt="Card image cap">
-                        <!--TODO add Jinja template for uploaded image -->
-                        <a href="#!">
-                            <div class="mask rgba-white-slight"></div>
-                        </a>
+            <div class="view overlay">
+                <!--TODO user in session reviews-->
+                <img class="card-img-top" src="https://picsum.photos/500/250" alt="Card image cap">
+                <!--TODO add Jinja template for uploaded image -->
+                <a href="#!">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+            <div class="card-body">
+                <!--TODO add jinja templating for users pin content-->
+                <h3 class="card-title mb-0">Place</h3>
+                <small class="text-muted">Reviewer name</small>
+                <p class="card-text mt-3">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum quas ipsa neque magni
+                    beatae corrupti voluptatum debitis, sit nisi qui in assumenda porro natus blanditiis earum
+                    facere, temporibus vitae maiores.</p>
+                <h5>Visit</h5>
+                <h5>Avoid</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<h6 class="font-weight-bold blue-grey-text py-2">Recent Pins</h6>
+<div class="container my-4">
+    <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+        <div class="carousel-controls-top text-center">
+            <a class="btn-floating tb-primary-floating" href="#multi-item-example" data-slide="prev">
+                <i class="fa fa-chevron-left"></i></a>
+            <a class="btn-floating tb-primary-floating" href="#multi-item-example" data-slide="next">
+                <i class="fa fa-chevron-right"></i></a>
+        </div>
+
+        <ol class="carousel-indicators">
+            <li class="tb-primary active" data-target="#multi-item-example" data-slide-to="0"></li>
+            <li class="tb-primary" data-target="#multi-item-example" data-slide-to="1"></li>
+            <li class="tb-primary" data-target="#multi-item-example" data-slide-to="2"></li>
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
                     </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
 
-                    <div class="card-body">
-                        <!--TODO add jinja templating for users pin content-->
-                        <h3 class="card-title mb-0">Place</h3>
-                        <small class="text-muted">Reviewer name</small>
-                        <p class="card-text mt-3">Some quick example text to build on the card title and make up the
-                            bulk
-                            of
-                            the card's
-                            content.
-                        </p>
-                        <h5>Visit</h5>
-                        <h5>Avoid</h5>
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <h6 class="font-weight-bold blue-grey-text py-2">Recent Pins</h6>
-        <!-- Card -->
-        <div class="pin-card card card-image view overlay"
-            style="background-image: url(https://picsum.photos/300/200);">
-            <!-- Content -->
-            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
-                <!--TODO add name truncation functionality for location name-->
-                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
-                <h5><small class="text">Username</small></h5>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
 
-            <a href="#" data-toggle="modal" data-target="#expandedview">
-                <!--TODO add data toggle and data target to href-->
-                <div class="mask waves-effect waves-light rgba-white-slight"></div>
-            </a>
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
 
+                        </div>
+                    </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 clearfix d-none d-md-block">
+                        <div class="pin-card card card-image view overlay"
+                            style="background-image: url(https://picsum.photos/300/200);">
+                            <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
+                                <!--TODO add name truncation functionality for location name-->
+                                <h4 class="card-title pt-2 mb-0"><strong>Location</strong></h4>
+                                <h5><small class="text">Username</small></h5>
+                            </div>
+
+                            <a href="#" data-toggle="modal" data-target="#expandedview">
+                                <!--TODO add data toggle and data target to href-->
+                                <div class="mask waves-effect waves-light rgba-white-slight"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -124,7 +285,7 @@
 <!--Add Pin Modal-->
 <a href="#" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#addPin-form">Add new pin
 </a>
-<!--Add pin modal-->
+<!--Pin modal-->
 <!--TODO Jinja templating for pin cards-->
 <div class="modal fade" id="addPin-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
