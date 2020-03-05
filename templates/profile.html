@@ -44,6 +44,14 @@
                     <textarea type="text" name = "avoid" class="md-textarea form-control">{{ pin.avoid }}</textarea>
                     <label>Places To Avoid</label>
                 </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="file-upload"
+                        aria-describedby="uploader" value="{{ pin.picture }}">
+                    <label class="custom-file-label" for="file-upload">Choose file</label>
+                </div>
+                <small id="passwordHelpBlockMD" class="form-text text-muted">
+                    Image must not be larger than 1250x1250px and must be either png, or jpeg.
+                </small>
             </div>
             <div class="modal-footer d-flex justify-content-center">
                 <input type="hidden" name="id" value="{{ pin.id }}">
