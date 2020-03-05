@@ -20,17 +20,17 @@
                     <!--TODO change avatar size in card-->
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title"><a>{{ user_data.first_name }} {{ user_data.last_name }</a></h4>
+                    <h4 class="card-title"><a>{{ user_data.first_name }} {{ user_data.last_name }}</a></h4>
                     <hr>
-                    {% if user_id == user_data.id %}
                     <h5>About Me</h5>
                     <form action = "/edit/{{ user_id }}" method = "POST">
-                    <div class="md-form">
+                        <div class="md-form">
+                            {% if user_id == user_data.id %}
                         <textarea id="form7" name="about-me" class="md-textarea form-control" rows="3"
-                            placeholder="Write something here..."></textarea>
+                            placeholder="Write something here...">{{user_data.about_me}}</textarea>
+                            {% endif %}
                         <label for="form7">Update your about me.</label>
                     </div>
-                    {% endif %}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#avatar-uploader">
                         Edit avatar
