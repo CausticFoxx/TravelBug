@@ -140,19 +140,30 @@ def newsfeed():
 #                  file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 #                  return redirect(url_for('uploaded_file',filename=filename))
 
-@app.route("/addpin", methods=['POST'])
+@app.route("/addpin", methods=['GET','POST'])
 def addPin():
-      is_valid = True
-      user_id = session['user_id']
-      location = request.form['location']
-      post = request.form['description']
-      go = request.form['visit']
-      avoid = request.form['avoid']
-      #picture = filename
+      if request.method == 'POST':
+            file = request.files['file']
+            if file:
+                  filename = secure_filename(file.filename)
+                  file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+                  
+                  user_id = session['user_id']
+                  location = request.form['location']
+                  post = request.form['description']
+                  go = request.form['visit']
+                  avoid = request.form['avoid']
+                  picture = filename
+                  print("***PICTURE IS****")
+                  print(picture)
 
-      form = [user_id, location, post, go, avoid]
-      new_pin = QuerySearch.pin_new(form)
-      return redirect(url_for("profile", user_id=user_id)) #redirect to profile
+                  form = [user_id, location, post, go, avoid, picture]
+                  new_pin = QuerySearch.pin_new(form)
+                  return redirect(url_for("profile", user_id=user_id)) #redirect to profile
+
+      else:
+            flash("Pin was not added successfully")
+            return redirect(url_for("profile", user_id=user_id)) #redirect to profile
 
 # edits pin when form is submitted
 @app.route("/pin/edit/<pin_id>", methods = ['POST'])
