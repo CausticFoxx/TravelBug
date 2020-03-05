@@ -163,7 +163,7 @@
                         <div class="view overlay">
                             <!--TODO user in session reviews-->
                             <!-- TODO need actual image path -->
-                            <img class="card-img-top" src="/{{ pin.picture }}" alt="Card image cap">
+                            <img class="card-img-top" src="{{url_for('static', filename=pin.picture)}}" alt="Card image cap" height="300">
                             <!--TODO add Jinja template for uploaded image -->
                             <a href="#!">
                                 <div class="mask rgba-white-slight"></div>

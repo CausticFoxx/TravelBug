@@ -87,7 +87,7 @@
             <div class="view overlay">
                 <!--TODO user in session reviews-->
                 <!-- TODO need actual image path -->
-                <img class="card-img-top" src="/{{ pin.picture }}" alt="Card image cap">
+                <img class="card-img-top" src="{{url_for('static', filename=pin.picture)}}" alt="Card image cap" height="300">
                 <!--TODO add Jinja template for uploaded image -->
                 <a href="#!">
                     <div class="mask rgba-white-slight"></div>
@@ -134,7 +134,7 @@
                     <div class="col-md-4 {{ 'clearfix d-none d-md-block' if loop.index % 3 != 1 }}">
                         <!-- pins.id, pins.post, pins.location_id, pins.user_id, pins.created_date, pins.go, pins.avoid, pins.picture -->
                         <div class="pin-card card card-image view overlay"
-                            style="background-image: url(/{{ pin.picture }});">
+                            style="background-image: url(/static/{{ pin.picture }});">
                             <!-- TODO need actual image path -->
                             <div class="pin-overlay text-white align-items-center rgba-black-light pb-5 px-3">
                                 <!--TODO add name truncation functionality for location name-->

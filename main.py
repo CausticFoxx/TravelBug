@@ -8,7 +8,7 @@ import os
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
-UPLOAD_FOLDER = '../TravelBug/templates/static/images/'
+UPLOAD_FOLDER = '../TravelBug/static/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app=Flask(__name__)
