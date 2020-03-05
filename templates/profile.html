@@ -102,7 +102,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action = "/addpin/{{ user_id }}" method = "POST">
+                                <form action = "/addpin" method = "POST" enctype="multipart/form-data">
                                 <div class="modal-body mx-3">
                                     <div class="md-form mb-5">
                                         <i class="fas prefix grey-text"></i>
@@ -135,7 +135,7 @@
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="file-input"
                                                 aria-describedby="upload-input">
-                                            <label class="custom-file-label" for="file-input">Choose file</label>
+                                            <label class="custom-file-label" name = "file" for="file-input">Choose file</label>
                                         </div>
                                         <small id="passwordHelpBlockMD" class="form-text text-muted">
                                             Image must not be larger than 1250x1250px and must be either png, or jpeg.

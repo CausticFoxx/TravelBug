@@ -159,8 +159,8 @@ class Validator:
                 form[3] = None
             if form[4] == "":
                 form[4] = None
-            if form[5] == "":
-                form[5] = "default_pin.jpg"
+            #if form[5] == "":
+            #    form[5] = "default_pin.jpg"
             return flag
         elif check_type == "update":
             if form[0] == "":
@@ -263,7 +263,7 @@ class QuerySearch:
                 "post": form[2],
                 "go": form[3],
                 "avoid": form[4],
-                "picture": form[5]
+                "picture": "jpg.jpg"
             }
             pin_add = mysql.query_db(query, data)
             return pin_add
