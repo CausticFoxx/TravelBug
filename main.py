@@ -202,7 +202,8 @@ def edit_profile_page(user_id):
       #if user is not in session, return to registration/login page
       if 'user_id' not in session:
             return redirect("/")
-      return render_template("edit_profile.html", user_id = user_id) #redirect to edit profile
+      user_data = QuerySearch.user_get(user_id)
+      return render_template("edit_profile.html", user_id = user_id, user_data=user_data[0]) #redirect to edit profile
 
 @app.route("/edit/<user_id>", methods=['POST'])
 def edit_profile(user_id):
