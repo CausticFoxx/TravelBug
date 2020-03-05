@@ -25,10 +25,10 @@
                     <h5>About Me</h5>
                     <form action = "/edit/{{ user_id }}" method = "POST">
                         <div class="md-form">
-                            {% if user_id == user_data.id %}
+                        
                         <textarea id="form7" name="about-me" class="md-textarea form-control" rows="3"
                             placeholder="Write something here...">{{user_data.about_me}}</textarea>
-                            {% endif %}
+                            
                         <label for="form7">Update your about me.</label>
                     </div>
                     <!-- Button trigger modal -->
@@ -69,7 +69,6 @@
                             </div>
                         </div>
                     </div>
-
                     <button type="submit" class="btn sub-btn btn-rounded">Save Changes</button>
                     </form>
                 </div>
